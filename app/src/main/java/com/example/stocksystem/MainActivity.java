@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what)
             {
+
                 case 1001:
                     String str = msg.getData().getString("result");
                     tvTestResult.setText(str);
