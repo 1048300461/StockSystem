@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">StockSystem</string>
+
+    <string name="app_name">AndroidSQL</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="testSQL">测试SQL</string>
+    <string name="clean">清除数据</string>
+    <string name="barcode_region">条码区域</string>
+    <string name="rest_barcode">剩余条码数</string>
 </resources>
