@@ -1,4 +1,4 @@
-package com.example.stocksystem;
+package com.example.stocksystem.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
