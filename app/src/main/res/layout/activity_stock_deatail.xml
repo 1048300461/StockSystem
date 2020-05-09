@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StockDeatailActivity"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:fadingEdge="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbars="vertical">
+
+        <TextView
+            android:text="分时线"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/time_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <TextView
+            android:text="日K线"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/day_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <TextView
+            android:textSize="18sp"
+            android:text="周K线"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/week_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <TextView
+            android:text="月K线"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/month_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+    </LinearLayout>
+
+
+</ScrollView>
