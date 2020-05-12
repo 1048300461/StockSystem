@@ -1,5 +1,7 @@
 package com.example.stocksystem.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class StockDataUtil {
     public static final String DEF_CHATSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 30000;
     public static final int DEF_READ_TIMEOUT = 30000;
+    private static final String TAG = "StockDataUtil";
     public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) " +
             "Chrome/29.0.1547.66 Safari/537.36";
 
@@ -46,6 +49,8 @@ public class StockDataUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //Log.d(TAG, "getLatestInfo: " + result);
+        System.out.println(result);
         return result;
     }
 
@@ -65,7 +70,8 @@ public class StockDataUtil {
         String[] parseResult = new String[correspondInfos.length - 1];
         for (int i = 1; i < correspondInfos.length; i++){
             //跳过第一个，第一个为股票名字，已经有了
-            parseResult[i - 1] = correspondInfos[i] + ": " + infos[i];
+            //parseResult[i - 1] = correspondInfos[i] + ": " + infos[i];
+            parseResult[i - 1] = infos[i];
         }
         return parseResult;
     }
@@ -128,11 +134,11 @@ public class StockDataUtil {
 
         String stockInfo = getLatestInfo("sh", 601006);
         String[] parseStockInfoReuslt = parseStockInfo(stockInfo);
-        String bigpanInfo = getBigPan("sh", 601006);
-        String[] parseBigPanResult = parseBigPan(bigpanInfo);
-
-        for(int i = 0; i < parseBigPanResult.length; i++)
-            System.out.println(parseBigPanResult[i]);
+//        String bigpanInfo = getBigPan("sh", 601006);
+//        String[] parseBigPanResult = parseBigPan(bigpanInfo);
+//
+//        for(int i = 0; i < parseBigPanResult.length; i++)
+//            System.out.println(parseBigPanResult[i]);
 
         for(int i = 0; i < parseStockInfoReuslt.length; i++)
             System.out.println(parseStockInfoReuslt[i]);

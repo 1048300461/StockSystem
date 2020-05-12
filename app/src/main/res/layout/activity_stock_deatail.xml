@@ -16,8 +16,181 @@
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="当前"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp" />
+            <TextView
+                android:id="@+id/current_price_tv"
+                android:text="60.18"
+                android:textColor="@color/colorRed"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingTop="16dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp"
+                android:text="高"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/high_price_tv"
+                android:text="58.88"
+                android:textColor="@color/colorRed"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="低"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/low_price_tv"
+                android:text="55.55"
+                android:textColor="@color/colorRed"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="开盘"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/begin_price_id"
+                android:text="46.00"
+                android:textColor="@color/colorRed"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="昨日收盘"
+                android:textSize="16sp"
+                android:paddingTop="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/yesterday_price_tv"
+                android:text="51.00"
+                android:textStyle="bold"
+                android:textColor="@color/colorRed"
+                android:paddingTop="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="成交金额"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/deal_money_tv"
+                android:text="31000"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="成交量"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/deal_num_tv"
+                android:text="3100"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
         <TextView
             android:text="分时线"
+            android:textColor="@color/colorBlack"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:textSize="18sp"
@@ -29,6 +202,9 @@
             android:layout_height="200dp"/>
         <TextView
             android:text="日K线"
+            android:textColor="@color/colorBlack"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             android:textSize="18sp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
@@ -41,6 +217,9 @@
         <TextView
             android:textSize="18sp"
             android:text="周K线"
+            android:textColor="@color/colorBlack"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
             android:layout_width="match_parent"
@@ -51,6 +230,9 @@
             android:layout_height="200dp"/>
         <TextView
             android:text="月K线"
+            android:textColor="@color/colorBlack"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
             android:textSize="18sp"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"

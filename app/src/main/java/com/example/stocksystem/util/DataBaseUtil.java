@@ -67,10 +67,10 @@ public class DataBaseUtil {
         return result;
     }
 
-    public static void main(String[] args)
-    {
-        testSQL();
-    }
+//    public static void main(String[] args)
+//    {
+//        testSQL();
+//    }
 
 }
 
