@@ -40,7 +40,7 @@
                 android:layout_height="30dp"
                 />
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/login_editText_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -71,7 +71,7 @@
                 android:layout_height="30dp"
                 />
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/login_editText_password"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -91,17 +91,29 @@
 
         </LinearLayout>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#83738F"></View>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="30dp"
-            android:paddingTop="20dp"
-            android:background="#99404348"
+            android:background="#99000000"
             android:gravity="center"
             android:orientation="horizontal">
 
 
+            <Spinner
+                android:backgroundTint="#99000000"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/login_spinner_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </Spinner>
         </LinearLayout>
 
         <LinearLayout
@@ -109,7 +121,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/login"
+                android:id="@+id/login_btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
