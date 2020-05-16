@@ -29,7 +29,7 @@ public class DataBaseUtil {
     private static String USER="sa";
     private static String PASSWORD="123456";
     private static String DB="dbo";
-
+    
     public static Connection getSQLConnection()
     {
 
