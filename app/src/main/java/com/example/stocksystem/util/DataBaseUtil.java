@@ -1,9 +1,14 @@
 package com.example.stocksystem.util;
+import com.example.stocksystem.bean.User;
+import com.example.stocksystem.dao.LoginOrSignInDao;
+import com.example.stocksystem.dao.impl.LoginOrSignInDaoImpl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 
 /**
@@ -20,13 +25,19 @@ public class DataBaseUtil {
      * @param db 数据库名
      * @return connection对象
      */
-    private static Connection getSQLConnection(String ip, String user, String pwd, String db)
+    private static String IP="192.168.179.1";
+    private static String USER="sa";
+    private static String PASSWORD="123456";
+    private static String DB="dbo";
+    
+    public static Connection getSQLConnection()
     {
+
         Connection con = null;
         try
         {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-              con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + ip + ":1433/" + db + ";useunicode=true;characterEncoding=UTF-8", user, pwd);
+              con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DB + ";useunicode=true;characterEncoding=UTF-8", USER, PASSWORD);
         } catch (ClassNotFoundException e)
         {
             e.printStackTrace();
@@ -46,7 +57,7 @@ public class DataBaseUtil {
         String result = "条码区域  -  剩余条码数\n";
         try
         {
-            Connection conn = getSQLConnection("192.168.92.145", "sa", "Zc19981221", "gp");
+            Connection conn = getSQLConnection();
             String sql = "select name from users";
             Statement stmt = conn.createStatement();//
             ResultSet rs = stmt.executeQuery(sql);
@@ -67,10 +78,10 @@ public class DataBaseUtil {
         return result;
     }
 
-//    public static void main(String[] args)
-//    {
-//        testSQL();
-//    }
+    public static void main(String[] args)
+    {
+        testSQL();
+    }
 
 }
 
