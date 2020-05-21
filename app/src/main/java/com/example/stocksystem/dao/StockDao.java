@@ -2,6 +2,8 @@ package com.example.stocksystem.dao;
 
 import com.example.stocksystem.bean.Stock;
 
+import java.util.List;
+
 /**
  * author:zc
  * created on:2020/4/21 16:47
@@ -29,4 +31,17 @@ public interface StockDao {
      * @return 查找结果
      */
     Stock findOneStock(int stockId, String stockName);
+
+    /**
+     * 根据Id找到股票名称
+     * @param stockId 股票id
+     * @return
+     */
+    Stock findStockById(int stockId);
+
+    /**
+     * 查询所有的股票id和名称
+     * @return
+     */
+    List<Stock> queryAllStock();
 }

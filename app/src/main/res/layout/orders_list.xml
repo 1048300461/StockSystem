@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:onClick="finishThis"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@mipmap/buttoncancel_logo_default"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+        <com.example.stocksystem.CircleImageView
+            android:id="@+id/ordersList_circleImageView_userPhoto"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/nologin_person"/>
+        <TextView
+            android:id="@+id/ordersList_textView_userName"
+            android:layout_marginLeft="20dp"
+            android:text=""
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <TableLayout
+                android:layout_marginLeft="20dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content">
+                <TableRow>
+
+                    <TextView
+                        android:layout_column="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="成交时间"
+                        android:textColor="#7F7F7F"
+                        android:textSize="20sp" />
+                </TableRow>
+
+            </TableLayout>
+            <TableLayout android:layout_width="200dp">
+                <TableRow >
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="15dp"
+                        android:textSize="20sp"
+                        android:textColor="#7F7F7F"
+                        android:text="成交价"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:text="成交量"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </TableLayout>
+            <TableLayout android:layout_marginLeft="10dp"
+                >
+                <TextView
+                    android:textColor="#7F7F7F"
+                    android:text="成交额"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableLayout>
+        </TableRow>
+    </TableLayout>
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ListView
+            android:background="@color/colorWhite"
+            android:id="@+id/orderList_listView_ShowTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ListView>
+    </LinearLayout>
+</LinearLayout>

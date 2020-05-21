@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+            <TableLayout
+                android:layout_marginLeft="20dp"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content">
+                <TableRow >
+                    <TextView
+                        android:layout_column="1"
+                        android:id="@+id/ordersList_tv_stockName"
+                        android:text="股票名称"
+                        android:textColor="#7F7F7F"
+                        android:textSize="20sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:id="@+id/ordersList_tv_type"
+                        android:background="#DDDDDD"
+                        android:text="买"
+                        android:textColor="#7F7F7F"
+                        android:textSize="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:id="@+id/ordersList_tv_time"
+                        android:textColor="#7F7F7F"
+                        android:textSize="10sp"
+                        android:text="2019-06-14,23:27:02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+
+            </TableLayout>
+            <TableLayout>
+                <TableRow android:layout_marginTop="10dp"
+                    android:layout_width="200dp">
+                    <TextView
+                        android:id="@+id/ordersList_tv_price"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="20sp"
+                        android:textColor="#7F7F7F"
+                        android:text="5.790"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/ordersList_tv_dealed"
+                        android:layout_gravity="center"
+                        android:text="200"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </TableLayout>
+            <TableLayout
+                android:layout_width="60dp"
+                android:layout_marginLeft="15dp">
+                <TextView
+                    android:id="@+id/ordersList_tv_type2"
+                    android:textColor="#7F7F7F"
+                    android:text="买入"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/ordersList_tv_total"
+                    android:textColor="#7F7F7F"
+                    android:text="2320.00"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableLayout>
+        </TableRow>
+    </TableLayout>
+
+
+</LinearLayout>

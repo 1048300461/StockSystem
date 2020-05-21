@@ -28,4 +28,11 @@ public interface UserDao {
      * @return 查找结果
      */
     User findOneUser(int userId);
+
+    /**
+     * 通过用户查询id
+     * @param username  用户名
+     * @return user_id
+     */
+    int findOneUserByUserName(String username);
 }
