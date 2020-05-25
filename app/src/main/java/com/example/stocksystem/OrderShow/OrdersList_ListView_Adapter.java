@@ -1,4 +1,4 @@
-package com.example.stocksystem;
+package com.example.stocksystem.OrderShow;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.stocksystem.R;
 import com.example.stocksystem.bean.Order;
 
 import java.text.SimpleDateFormat;

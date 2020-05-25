@@ -21,7 +21,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="150dp">
-        <com.example.stocksystem.CircleImageView
+        <com.example.stocksystem.OrderShow.CircleImageView
             android:id="@+id/ordersList_circleImageView_userPhoto"
             android:layout_width="78dp"
             android:layout_height="78dp"
