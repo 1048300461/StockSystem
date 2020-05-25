@@ -1,4 +1,4 @@
-package com.example.stocksystem;
+package com.example.stocksystem.OrderShow;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -1,16 +1,16 @@
-package com.example.stocksystem;
+package com.example.stocksystem.OrderShow;
 
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.stocksystem.R;
 import com.example.stocksystem.bean.Order;
 import com.example.stocksystem.bean.Stock;
 import com.example.stocksystem.dao.OrdersListDao;
