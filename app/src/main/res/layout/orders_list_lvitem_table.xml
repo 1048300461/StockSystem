@@ -11,7 +11,7 @@
         <TableRow>
             <TableLayout
                 android:layout_marginLeft="20dp"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TableRow >
                     <TextView
@@ -45,7 +45,7 @@
             </TableLayout>
             <TableLayout>
                 <TableRow android:layout_marginTop="10dp"
-                    android:layout_width="200dp">
+                    >
                     <TextView
                         android:id="@+id/ordersList_tv_price"
                         android:layout_gravity="center"
@@ -66,7 +66,7 @@
                 </TableRow>
             </TableLayout>
             <TableLayout
-                android:layout_width="60dp"
+                android:paddingLeft="20dp"
                 android:layout_marginLeft="15dp">
                 <TextView
                     android:id="@+id/ordersList_tv_type2"
