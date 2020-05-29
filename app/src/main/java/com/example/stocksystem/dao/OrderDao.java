@@ -9,7 +9,7 @@ import com.example.stocksystem.bean.Order;
  */
 public interface OrderDao {
     /**
-     * 插入一条order记录
+     * 插入一条order记录-->order_id和create_date由插入语句自动生成
      * @param order 插入的数据
      * @return 插入的结果
      */
@@ -29,4 +29,5 @@ public interface OrderDao {
      * @return 查找结果
      */
     Order findOneOrderByUserIdAndStockId(int userId, int stockId);
+
 }
