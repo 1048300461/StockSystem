@@ -23,6 +23,7 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".ChatMainPage.ChatMainPageActivity"/>
     </application>
 
 </manifest>
