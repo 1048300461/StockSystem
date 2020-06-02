@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".OrderShow.sellOrderUserActivity">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:onClick="finishThis"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@mipmap/buttoncancel_logo_default"
+            android:background="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingLeft="60dp"
+                android:text="卖出"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/sell_order_user_tvUser"
+                android:text="(未登录)"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:background="@drawable/sell_order_spinner_style"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:id="@+id/sellOrder_spinner_type"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+        </Spinner>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <Button
+                android:onClick="subPrice"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:background="@drawable/sell_order_btn_as"
+                android:text="—"
+                android:textAlignment="center"
+                android:textColor="#3366FF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:inputType="number|numberDecimal"
+                android:id="@+id/sell_order_user_edPrice"
+                android:paddingLeft="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/sell_order_btn_as"
+                android:hint="价格" />
+
+            <Button
+                android:onClick="addPrice"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/sell_order_btn_as"
+                android:text="+"
+                android:textAlignment="center"
+                android:textColor="#3366FF"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <Button
+                android:onClick="subCount"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:background="@drawable/sell_order_btn_as"
+                android:text="—"
+                android:textAlignment="center"
+                android:textColor="#3366FF"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/sell_order_user_edCount"
+                android:inputType="number|numberDecimal"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:paddingLeft="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/sell_order_btn_as"
+                android:hint="数量" />
+
+            <Button
+                android:onClick="addCount"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/sell_order_btn_as"
+                android:text="+"
+                android:textAlignment="center"
+                android:textColor="#3366FF"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/sell_order_sellOK"
+            android:background="#3366FF"
+            android:text="卖出"
+            android:textSize="30dp"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        </Button>
+    </LinearLayout>
+    <View
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#83738F"></View>
+
+    <LinearLayout
+        android:background="#83738F"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:background="@color/colorWhite"
+            android:text="近期交易"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_margin="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/sell_order_lvbuy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="#83738F"></View>
+
+            <ListView
+                android:id="@+id/sell_order_lvSell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

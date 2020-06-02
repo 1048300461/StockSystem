@@ -2,6 +2,13 @@ package com.example.stocksystem.dao.impl;
 
 import com.example.stocksystem.bean.Order;
 import com.example.stocksystem.dao.OrderDao;
+import com.example.stocksystem.util.DataBaseUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 /**
  * author:zc
@@ -11,12 +18,63 @@ import com.example.stocksystem.dao.OrderDao;
 public class OrderDaoImpl implements OrderDao {
     @Override
     public boolean insertOrder(Order order) {
-        return false;
+        boolean result = false;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateString = formatter.format(order.getCreate_date());
+            String sql = "insert into orders values(?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,queryOrdersCount()+40000001);
+            pstmt.setString(2,dateString);
+            pstmt.setInt(3,order.getUser_id());
+            pstmt.setInt(4,order.getStock_id());
+            pstmt.setInt(5,order.getType());
+            pstmt.setDouble(6,order.getPrice());
+            pstmt.setInt(7,order.getUndealed());
+            pstmt.setInt(8,order.getDealed());
+            pstmt.setInt(9,order.getCanceled());
+            pstmt.setInt(10,order.getTemp());
+            int res = pstmt.executeUpdate();
+            if (res > 0)
+            {
+                result = true;
+            }
+            pstmt.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
-
     @Override
     public boolean deleteOrder(int orderId) {
         return false;
+    }
+
+    /**
+     *查询orders表中的行数，便于生成order_id
+     * @return
+     */
+    private static int queryOrdersCount() {
+        int Count = 0;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select count(*) from orders";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next())
+            {
+                Count =rs.getInt(1);
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Count;
     }
 
     @Override

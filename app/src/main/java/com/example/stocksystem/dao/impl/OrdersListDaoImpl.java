@@ -77,11 +77,11 @@ public class OrdersListDaoImpl implements OrdersListDao {
     }
 
     @Override
-    public List<Order> queryOrdersByStockId(int stockId) {
+    public List<Order> queryOrdersByStockIdAndType(int stockId,int type) {
         List<Order> lists = new ArrayList<>();
         try{
             Connection conn = DataBaseUtil.getSQLConnection();
-            String sql = "select * from orders where stock_id="+stockId;
+            String sql = "select * from orders where stock_id="+stockId+" and type="+type;
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next())

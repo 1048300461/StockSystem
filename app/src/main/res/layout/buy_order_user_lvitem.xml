@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+用于加载buy_order_user.xml中的ListView
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--买卖编号-->
+    <TextView
+        android:id="@+id/buy_order_user_lvitem_TVNum"
+        android:text="买1"
+        android:textSize="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
+    <!--买卖价格-->
+    <TextView
+        android:id="@+id/buy_order_user_lvitem_TVprice"
+        android:text="8.90"
+        android:textSize="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <!--买卖数量-->
+    <TextView
+        android:id="@+id/buy_order_user_lvitem_TVCount"
+        android:text="200"
+        android:textSize="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
