@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".OrderShow.sellOrderUserActivity">
+    tools:context=".OrderShow.SellOrderUserActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:background="@color/colorWhite"
