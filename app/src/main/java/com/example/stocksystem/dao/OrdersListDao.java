@@ -25,9 +25,9 @@ public interface OrdersListDao {
     List<Order> queryOrdersByUser(int userId);
 
     /**
-     *按照股票编号进行查询
+     *按照股票编号和买卖类型进行查询
      * @Parm stockId
      * @return
      */
-    List<Order> queryOrdersByStockId(int stockId);
+    List<Order> queryOrdersByStockIdAndType(int stockId,int type);
 }
