@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StockDeatailActivity"></activity>
-        <activity android:name=".OrderShow.buyOrderUserActivity">
+        <activity android:name=".OrderShow.OrdersListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,6 +25,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".OrderShow.OrdersListActivity" />
         <activity android:name=".OrderShow.sellOrderUserActivity" />
+        <activity android:name=".ChatMainPage.ChatMainPageActivity"/>
     </application>
 
 </manifest>

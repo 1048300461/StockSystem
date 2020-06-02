@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="5dip"
+    android:layout_height="wrap_content">
+    <!--用来显示接受到的信息-->
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:id="@+id/rev_layout"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/rev_tv"
+            android:background="@drawable/shape_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!--用来显示发送出去信息-->
+    <LinearLayout
+        android:layout_marginRight="5dp"
+        android:id="@+id/send_layout"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/send_tv"
+            android:background="@drawable/shape_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
