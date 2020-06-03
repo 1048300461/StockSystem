@@ -30,4 +30,11 @@ public interface OrderDao {
      */
     Order findOneOrderByUserIdAndStockId(int userId, int stockId);
 
+    /**
+     *取消订单
+     * @param order_id 订单id
+     * @return
+     */
+    boolean CancelOrder(int order_id);
+
 }

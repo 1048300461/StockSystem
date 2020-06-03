@@ -1,6 +1,8 @@
 package com.example.stocksystem.OrderShow;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-public class OrdersList_ListView_Adapter extends BaseAdapter {
+public class CancelOrderList_ListView_Adapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private List<Order> orderList;  //填充列表数据
     Map<String,String> stockMap;    //用于查询股票名称
 
-    public OrdersList_ListView_Adapter(Context context, List<Order> orderList,Map<String,String> stockMap) {
+    public CancelOrderList_ListView_Adapter(Context context, List<Order> orderList, Map<String,String> stockMap) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.orderList = orderList;
@@ -50,19 +52,30 @@ public class OrdersList_ListView_Adapter extends BaseAdapter {
         {
             //获取控件，实例化
             hodler = new ViewHodler();
-            convertView = mInflater.inflate(R.layout.orders_list_lvitem_table,null);
-            hodler.tv_stockName = convertView.findViewById(R.id.ordersList_tv_stockName);
-            hodler.tv_type = convertView.findViewById(R.id.ordersList_tv_type);
-            hodler.tv_time = convertView.findViewById(R.id.ordersList_tv_time);
-            hodler.tv_price = convertView.findViewById(R.id.ordersList_tv_price);
-            hodler.tv_deaded = convertView.findViewById(R.id.ordersList_tv_dealed);
-            hodler.tv_type2 = convertView.findViewById(R.id.ordersList_tv_type2);
-            hodler.tv_total = convertView.findViewById(R.id.ordersList_tv_total);
+            convertView = mInflater.inflate(R.layout.cancel_orders_list_lvitem_table,null);
+            hodler.tv_stockName = convertView.findViewById(R.id.cancel_ordersList_tv_stockName);
+            hodler.tv_type = convertView.findViewById(R.id.cancel_ordersList_tv_type);
+            hodler.tv_time = convertView.findViewById(R.id.cancel_ordersList_tv_time);
+            hodler.tv_price = convertView.findViewById(R.id.cancel_ordersList_tv_price);
+            hodler.tv_deaded = convertView.findViewById(R.id.cancel_ordersList_tv_dealed);
+            hodler.tv_type2 = convertView.findViewById(R.id.cancel_ordersList_tv_type2);
+            hodler.tv_total = convertView.findViewById(R.id.cancel_ordersList_tv_total);
             convertView.setTag(hodler);
         }
         else
         {
             hodler = (ViewHodler) convertView.getTag();
+        }
+        if (orderList.get(position).getCanceled()==1)   //取消订单设置样式
+        {
+            hodler.tv_stockName.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_type.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_type2.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_time.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_price.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_total.setTextColor(Color.parseColor("#C0C0C0"));
+            hodler.tv_deaded.setTextColor(Color.parseColor("#C0C0C0"));
+
         }
         //设置值
         hodler.tv_stockName.setText(stockMap.get(orderList.get(position).getStock_id()+""));
@@ -82,9 +95,12 @@ public class OrdersList_ListView_Adapter extends BaseAdapter {
         //设置成交价
         hodler.tv_price.setText(orderList.get(position).getPrice() + "");
         //设置交易量
-        hodler.tv_deaded.setText(orderList.get(position).getDealed()+"");
+        hodler.tv_deaded.setText(orderList.get(position).getUndealed()+"");
         //设置成交额
-        hodler.tv_total.setText(orderList.get(position).getDealed()*orderList.get(position).getPrice()+"");
+        if (orderList.get(position).getCanceled()==0)
+            hodler.tv_total.setText("未成交");
+        else
+            hodler.tv_total.setText("已取消");
         return convertView;
     }
     class ViewHodler{

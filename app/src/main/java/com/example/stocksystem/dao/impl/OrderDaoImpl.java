@@ -81,4 +81,24 @@ public class OrderDaoImpl implements OrderDao {
     public Order findOneOrderByUserIdAndStockId(int userId, int stockId) {
         return null;
     }
+
+    @Override
+    public boolean CancelOrder(int order_id) {
+        boolean result = false;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "update orders set canceled=1 where order_id="+order_id;
+            Statement statement = conn.createStatement();
+            int i = 0;
+            i = statement.executeUpdate(sql);
+            if (i!=0)
+                result = true;
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

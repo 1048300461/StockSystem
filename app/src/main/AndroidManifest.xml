@@ -31,7 +31,6 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <activity android:name=".StockDeatailActivity"></activity>
-        <activity android:name=".ChatMainPage.ChatMainPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,9 +40,6 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".OrderShow.SellOrderUserActivity" />
-        <activity android:name=".TestVoiceActivity"/>
-        <activity android:name=".OrderShow.BuyOrderUserActivity"/>
     </application>
 
 </manifest>

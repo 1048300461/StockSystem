@@ -4,6 +4,7 @@ package com.example.stocksystem.OrderShow;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class OrdersListActivity extends AppCompatActivity {
 
     private OrdersList_ListView_Adapter lvAdapter;//listView的自定义配置器
     private List<Order> orderList;  //数据库中数据
-    private Map<String,String> stockNameMap;
+    private Map<String,String> stockNameMap = new HashMap<String, String>();
 
     private ProgressDialog progressDialog;
     private TextView tv_username;
@@ -47,6 +48,7 @@ public class OrdersListActivity extends AppCompatActivity {
         tv_username.setText(username);
         OrdersListAsyncTask ordersListAT = new OrdersListAsyncTask();       //访问数据库的耗时操作
         ordersListAT.execute();
+
 
 
     }
@@ -74,9 +76,9 @@ public class OrdersListActivity extends AppCompatActivity {
         StockDao stockDao = new StockDaoImpl();
         List<Stock> stockList = stockDao.queryAllStock();       //数据库中查询表的操作
         for (Stock s: stockList) {
-            stockNameMap = new HashMap<String, String>();
             stockNameMap.put(s.getStock_id()+"",s.getName());
         }
+
     }
 
     //异步任务方法-->访问数据的耗时操作

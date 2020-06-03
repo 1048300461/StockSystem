@@ -1,6 +1,7 @@
 package com.example.stocksystem.dao.impl;
 
 import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.bean.UserPosition;
 import com.example.stocksystem.dao.StockDao;
 import com.example.stocksystem.util.DataBaseUtil;
 
@@ -78,4 +79,56 @@ public class StockDaoImpl implements StockDao {
         }
         return lists;
     }
+
+    @Override
+    public List<Stock> queryStockBelongUser(int user_id) {
+        List<Stock> lists = new ArrayList<>();
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select s.name,s.stock_id from user_position as u,stock as s where u.user_id = "+user_id+" and u.num_free!=0 and u.stock_id=s.stock_id";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next())
+            {
+                Stock stock = new Stock();
+                stock.setName(rs.getString("name"));
+                stock.setStock_id(rs.getInt("stock_id"));
+                stock.setTemp(0);
+                lists.add(stock);
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return lists;
+    }
+
+    public List<UserPosition> queryStockBelongUserPosition(int user_id) {
+        List<UserPosition> lists = new ArrayList<>();
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select  * from user_position as u , stock as s where u.user_id = "+user_id+" and u.num_free!=0 and u.stock_id=s.stock_id";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next())
+            {
+                UserPosition up = new UserPosition();
+                up.setUser_id(rs.getInt("user_id"));
+                up.setStock_id(rs.getInt("stock_id"));
+                up.setNum_free(rs.getInt("num_free"));
+                up.setNum_freezed(rs.getInt("num_freezed"));
+                up.setTemp(0);
+                lists.add(up);
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return lists;
+    }
+
 }
