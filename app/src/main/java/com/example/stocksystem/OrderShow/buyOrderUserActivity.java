@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,12 +28,13 @@ import com.example.stocksystem.dao.impl.OrdersListDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
 
 import java.text.DecimalFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
 public class buyOrderUserActivity extends AppCompatActivity {
 
-    public static String username = "未登录";
+    public static String username = "wang";
     public static int user_id = 10000001;
     //页面控件
     private TextView tv_username;
@@ -41,10 +43,12 @@ public class buyOrderUserActivity extends AppCompatActivity {
     private EditText editText_Count;//数量
     private ListView listView_buy ;
     private ListView listView_sell;
-    private List<Order> showBuyOrderList = new ArrayList<>();
-    private List<Order> showSellOrderList =  new ArrayList<>();
     private ProgressDialog progressDialog;
     private Button btn_buy;    //买入
+    //private AutoCompleteTextView autoTv_stock;    //显示股票名称和id
+
+    private List<Order> showBuyOrderList = new ArrayList<>();
+    private List<Order> showSellOrderList =  new ArrayList<>();
     private boolean IsBuy = false;     //判断是否卖出成功
     private Order order  = new Order();
 
@@ -64,6 +68,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
         listView_buy = findViewById(R.id.buy_order_lvbuy);
         listView_sell = findViewById(R.id.buy_order_lvSell);
         btn_buy = findViewById(R.id.buy_order_buyOK);
+       // autoTv_stock = (AutoCompleteTextView) findViewById(R.id.buyOrder_autoTv_type);
 
         //显示用户名
         tv_username.setText("("+username+")");
@@ -89,6 +94,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
                         order.setCanceled(0);
                         order.setTemp(0);
                         sellTask.execute();
+
                     }else
                     {
                         Toast.makeText(buyOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
@@ -137,6 +143,23 @@ public class buyOrderUserActivity extends AppCompatActivity {
         getStockAcsncTask.execute();
     }
 
+    //输入选择框--->无法显示
+    /*
+    private void initAutoTextView()
+    {
+        //选择股票名称
+        String []strType= new String[stockList.size()+1];
+        for (int i=0;i<stockList.size();i++)
+        {
+            strType[i] = stockList.get(i).getStock_id()+"--"+stockList.get(i).getName();
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,strType);
+        autoTv_stock.setAdapter(arrayAdapter);
+    }
+     */
+
+
     //加载下拉框
     private void initSpinner(){
         //下拉框选择用户类型
@@ -144,7 +167,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
         strType[0] = "请选择股票名称";
         for (int i=0;i<stockList.size();i++)
         {
-            strType[i+1] = stockList.get(i).getName();
+            strType[i+1] = stockList.get(i).getStock_id()+"--"+stockList.get(i).getName();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.login_simple_spinner_item,strType);
         adapter.setDropDownViewResource(R.layout.login_simple_spinner_item);
@@ -249,6 +272,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
             else
                 Toast.makeText(buyOrderUserActivity.this,"卖出失败！",Toast.LENGTH_LONG).show();
             initSpinner();
+            //initAutoTextView();
         }
 
     }

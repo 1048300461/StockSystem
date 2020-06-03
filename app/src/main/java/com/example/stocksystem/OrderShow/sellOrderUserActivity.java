@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stocksystem.R;
 import com.example.stocksystem.bean.Order;
 import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.bean.UserPosition;
 import com.example.stocksystem.dao.OrderDao;
 import com.example.stocksystem.dao.OrdersListDao;
 import com.example.stocksystem.dao.StockDao;
@@ -32,19 +34,23 @@ import java.util.List;
 
 public class sellOrderUserActivity extends AppCompatActivity {
 
-    public static String username = "未登录";
-    public static int user_id = 10000001;
+    public static String username = "wang";
+    public static int user_id = 10000002;
     //页面控件
-    private TextView tv_username;
+    private TextView tv_username;    //显示用户名
     private Spinner spinner;        //用于显示选择的股票
     private EditText editText_price;//价格
     private EditText editText_Count;//数量
     private ListView listView_buy ;
     private ListView listView_sell;
-    private List<Order> showBuyOrderList = new ArrayList<>();
-    private List<Order> showSellOrderList =  new ArrayList<>();
     private ProgressDialog progressDialog;
     private Button btn_sell;    //卖出
+    private TextView tv_maxDealed;  //显示某股票某人的拥有量
+    private LinearLayout ll_maxDealed;  //用于显示或者隐藏
+
+    //暂时存储的数据
+    private List<Order> showBuyOrderList = new ArrayList<>();
+    private List<Order> showSellOrderList =  new ArrayList<>();
     private boolean IsSell = false;     //判断是否卖出成功
     private Order order  = new Order();
 
@@ -54,6 +60,8 @@ public class sellOrderUserActivity extends AppCompatActivity {
 
     //数据库中的股票编号和名称
     private List<Stock> stockList;
+    //某人所持股票的数量
+    private List<UserPosition> positionList;
     //选中的股票编号
     private int OnItemStockId = 0;
     @Override
@@ -68,6 +76,8 @@ public class sellOrderUserActivity extends AppCompatActivity {
         listView_buy = findViewById(R.id.sell_order_lvbuy);
         listView_sell = findViewById(R.id.sell_order_lvSell);
         btn_sell = findViewById(R.id.sell_order_sellOK);
+        tv_maxDealed = findViewById(R.id.sell_order_tv_showDealed);
+        ll_maxDealed = findViewById(R.id.sell_order_LL_showDealed);
 
         //显示用户名
         tv_username.setText("("+username+")");
@@ -76,7 +86,7 @@ public class sellOrderUserActivity extends AppCompatActivity {
         btn_sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!username.equals("未登录"))
+                if(!username.equals("未登录") && Integer.parseInt(tv_maxDealed.getText()+"") >=Integer.parseInt(editText_Count.getText()+"") )
                 {
                     if (!editText_price.getText().toString().equals("") && !editText_Count.getText().toString().equals("")
                             &&!editText_Count.getText().equals("0")&&!editText_price.getText().equals("0")
@@ -88,8 +98,8 @@ public class sellOrderUserActivity extends AppCompatActivity {
                         order.setStock_id(stockList.get((spinner.getSelectedItemPosition()-1)).getStock_id());
                         order.setType(1);
                         order.setPrice(Double.parseDouble(editText_price.getText().toString()));
-                        order.setUndealed(0);
-                        order.setDealed(Integer.parseInt(editText_Count.getText().toString()));
+                        order.setUndealed(Integer.parseInt(editText_Count.getText().toString()));
+                        order.setDealed(0);
                         order.setCanceled(0);
                         order.setTemp(0);
                         sellTask.execute();
@@ -106,8 +116,7 @@ public class sellOrderUserActivity extends AppCompatActivity {
             }
         });
 
-
-
+        //下拉列表点击事件监听
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -116,6 +125,8 @@ public class sellOrderUserActivity extends AppCompatActivity {
                     OnItemStockId = stockList.get(i-1).getStock_id();
                     GetBuySellAcsncTask getBuySellAcsncTask = new GetBuySellAcsncTask();
                     getBuySellAcsncTask.execute();
+                    tv_maxDealed.setText(positionList.get(i-1).getNum_free()+"");
+                    ll_maxDealed.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -153,7 +164,7 @@ public class sellOrderUserActivity extends AppCompatActivity {
         strType[0] = "请选择股票名称";
         for (int i=0;i<stockList.size();i++)
         {
-            strType[i+1] = stockList.get(i).getName();
+            strType[i+1] = stockList.get(i).getStock_id()+"--"+stockList.get(i).getName();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.login_simple_spinner_item,strType);
         adapter.setDropDownViewResource(R.layout.login_simple_spinner_item);
@@ -208,8 +219,15 @@ public class sellOrderUserActivity extends AppCompatActivity {
     public void addCount(View view) {
         if (!editText_Count.getText().toString().equals("")) {
             int int1 = Integer.parseInt(editText_Count.getText() + "");
-            int1 = int1 + 1;
-            editText_Count.setText(int1 + "");
+            if (int1<Integer.parseInt(tv_maxDealed.getText()+""))
+            {
+                int1 = int1 + 1;
+                editText_Count.setText(int1 + "");
+            }else
+            {
+                Toast.makeText(sellOrderUserActivity.this,"已经是最大持有量！",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -260,7 +278,7 @@ public class sellOrderUserActivity extends AppCompatActivity {
 
     }
 
-    //访问数据库--》得到股票编号和名称
+    //访问数据库--》得到所持有股票编号和名称
     private class GetStockAcsncTask extends AsyncTask<String,Integer,String> {
 
         /**
@@ -284,9 +302,10 @@ public class sellOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(String... strings) {
-            StockDao stockDao = new StockDaoImpl();
-            stockList= stockDao.queryAllStock();
-            return null;
+            StockDaoImpl stockDao = new StockDaoImpl();
+            stockList= stockDao.queryStockBelongUser(user_id);
+            positionList = stockDao.queryStockBelongUserPosition(user_id);
+        return null;
         }
         /**
          * onPostExecute方法用于在执行完后更新UI，显示结果

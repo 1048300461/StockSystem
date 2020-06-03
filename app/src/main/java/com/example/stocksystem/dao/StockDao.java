@@ -1,6 +1,7 @@
 package com.example.stocksystem.dao;
 
 import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.bean.UserPosition;
 
 import java.util.List;
 
@@ -44,4 +45,12 @@ public interface StockDao {
      * @return
      */
     List<Stock> queryAllStock();
+
+    /**
+     *查询某人所拥有的某股票的数量
+     * @param user_id 用户id
+     * @return 查询的结果
+     */
+    List<Stock> queryStockBelongUser(int user_id);
+
 }

@@ -129,6 +129,7 @@
                 android:background="@drawable/sell_order_btn_as"
                 android:hint="数量" />
 
+
             <Button
                 android:onClick="addCount"
                 android:layout_width="50dp"
@@ -141,23 +142,44 @@
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sell_order_LL_showDealed"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginLeft="80dp"
+            android:text="持有量："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/sell_order_tv_showDealed"
+            android:text="200"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
+            android:layout_marginTop="10dp"
             android:id="@+id/sell_order_sellOK"
             android:background="#3366FF"
             android:text="卖出"
             android:textSize="30dp"
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="80dp"
-            android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
             android:layout_width="match_parent"
             android:layout_height="40dp">
         </Button>
     </LinearLayout>
+
     <View
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
