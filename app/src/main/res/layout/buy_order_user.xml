@@ -4,37 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".OrderShow.buyOrderUserActivity">
+    tools:context=".OrderShow.BuyOrderUserActivity">
     <LinearLayout
         android:orientation="horizontal"
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:onClick="finishThis"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@mipmap/buttoncancel_logo_default"
-            android:background="@color/colorWhite"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
-                android:paddingLeft="60dp"
-                android:layout_gravity="center"
-                android:textSize="25sp"
-                android:text="买入"
+                android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="买入"
+                android:textSize="25sp"
+                android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/buy_order_user_tvUser"
                 android:text="(未登录)"
                 android:textSize="20sp"
-                android:layout_gravity="center"
+                android:layout_toRightOf="@id/title_tv"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                />
+        </RelativeLayout>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"

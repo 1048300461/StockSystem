@@ -3,13 +3,12 @@ package com.example.stocksystem.OrderShow;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stocksystem.R;
 import com.example.stocksystem.bean.Order;
 import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.bean.UserPosition;
 import com.example.stocksystem.dao.OrderDao;
 import com.example.stocksystem.dao.OrdersListDao;
 import com.example.stocksystem.dao.StockDao;
@@ -28,83 +28,94 @@ import com.example.stocksystem.dao.impl.OrdersListDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
 
 import java.text.DecimalFormat;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
-public class buyOrderUserActivity extends AppCompatActivity {
+public class SellOrderUserActivity extends AppCompatActivity {
 
     public static String username = "wang";
-    public static int user_id = 10000001;
+    public static int user_id = 10000002;
     //页面控件
-    private TextView tv_username;
+    private TextView tv_username;    //显示用户名
     private Spinner spinner;        //用于显示选择的股票
     private EditText editText_price;//价格
     private EditText editText_Count;//数量
     private ListView listView_buy ;
     private ListView listView_sell;
     private ProgressDialog progressDialog;
-    private Button btn_buy;    //买入
-    //private AutoCompleteTextView autoTv_stock;    //显示股票名称和id
+    private Button btn_sell;    //卖出
+    private TextView tv_maxDealed;  //显示某股票某人的拥有量
+    private LinearLayout ll_maxDealed;  //用于显示或者隐藏
 
+    //暂时存储的数据
     private List<Order> showBuyOrderList = new ArrayList<>();
     private List<Order> showSellOrderList =  new ArrayList<>();
-    private boolean IsBuy = false;     //判断是否卖出成功
+    private boolean IsSell = false;     //判断是否卖出成功
     private Order order  = new Order();
+
+    //listView的Adapter
+    private buyOrder_User_ListView_Adapter buyLVAdapter;
+    private buyOrder_User_ListView_Adapter sellLVAdapter;
 
     //数据库中的股票编号和名称
     private List<Stock> stockList;
+    //某人所持股票的数量
+    private List<UserPosition> positionList;
     //选中的股票编号
     private int OnItemStockId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.buy_order_user);
+        setContentView(R.layout.sell_order_user);
         //实例页面控件
-        tv_username = findViewById(R.id.buy_order_user_tvUser);
-        spinner = findViewById(R.id.buyOrder_spinner_type);
-        editText_price = findViewById(R.id.buy_order_user_edPrice);
-        editText_Count = findViewById(R.id.buy_order_user_edCount);
-        listView_buy = findViewById(R.id.buy_order_lvbuy);
-        listView_sell = findViewById(R.id.buy_order_lvSell);
-        btn_buy = findViewById(R.id.buy_order_buyOK);
-       // autoTv_stock = (AutoCompleteTextView) findViewById(R.id.buyOrder_autoTv_type);
+        tv_username = findViewById(R.id.sell_order_user_tvUser);
+        spinner = findViewById(R.id.sellOrder_spinner_type);
+        editText_price = findViewById(R.id.sell_order_user_edPrice);
+        editText_Count = findViewById(R.id.sell_order_user_edCount);
+        listView_buy = findViewById(R.id.sell_order_lvbuy);
+        listView_sell = findViewById(R.id.sell_order_lvSell);
+        btn_sell = findViewById(R.id.sell_order_sellOK);
+        tv_maxDealed = findViewById(R.id.sell_order_tv_showDealed);
+        ll_maxDealed = findViewById(R.id.sell_order_LL_showDealed);
 
         //显示用户名
         tv_username.setText("("+username+")");
 
-        //buy按钮监听  确定卖出
-        btn_buy.setOnClickListener(new View.OnClickListener() {
+        //确定卖出
+        btn_sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!username.equals("未登录"))
+                if(!username.equals("未登录") && Integer.parseInt(tv_maxDealed.getText()+"") >=Integer.parseInt(editText_Count.getText()+"") )
                 {
                     if (!editText_price.getText().toString().equals("") && !editText_Count.getText().toString().equals("")
                             &&!editText_Count.getText().equals("0")&&!editText_price.getText().equals("0")
                             && spinner.getSelectedItemPosition()!=0
                     )
                     {
-                        BuyOrdersAcsncTask sellTask = new BuyOrdersAcsncTask();
+                        SellOrdersAcsncTask sellTask = new SellOrdersAcsncTask();
                         order.setUser_id(user_id);
                         order.setStock_id(stockList.get((spinner.getSelectedItemPosition()-1)).getStock_id());
-                        order.setType(0);       //0为买入
+                        order.setType(1);
                         order.setPrice(Double.parseDouble(editText_price.getText().toString()));
-                        order.setUndealed(0);
-                        order.setDealed(Integer.parseInt(editText_Count.getText().toString()));
+                        order.setUndealed(Integer.parseInt(editText_Count.getText().toString()));
+                        order.setDealed(0);
                         order.setCanceled(0);
                         order.setTemp(0);
                         sellTask.execute();
-
                     }else
                     {
-                        Toast.makeText(buyOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SellOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
                     }
                 }else
-                    Toast.makeText(buyOrderUserActivity.this,"用户未登录！",Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(SellOrderUserActivity.this,"用户未登录！",Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
 
+        //下拉列表点击事件监听
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -113,6 +124,8 @@ public class buyOrderUserActivity extends AppCompatActivity {
                     OnItemStockId = stockList.get(i-1).getStock_id();
                     GetBuySellAcsncTask getBuySellAcsncTask = new GetBuySellAcsncTask();
                     getBuySellAcsncTask.execute();
+                    tv_maxDealed.setText(positionList.get(i-1).getNum_free()+"");
+                    ll_maxDealed.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -122,7 +135,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
 
             }
         });
-        //最近某股票的买入卖出交易量
+
         //设置列表监听
         listView_buy.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -143,23 +156,6 @@ public class buyOrderUserActivity extends AppCompatActivity {
         getStockAcsncTask.execute();
     }
 
-    //输入选择框--->无法显示
-    /*
-    private void initAutoTextView()
-    {
-        //选择股票名称
-        String []strType= new String[stockList.size()+1];
-        for (int i=0;i<stockList.size();i++)
-        {
-            strType[i] = stockList.get(i).getStock_id()+"--"+stockList.get(i).getName();
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,strType);
-        autoTv_stock.setAdapter(arrayAdapter);
-    }
-     */
-
-
     //加载下拉框
     private void initSpinner(){
         //下拉框选择用户类型
@@ -174,16 +170,14 @@ public class buyOrderUserActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
+    //更新ListView
     private void initViewListView(){
-        //买入
-        buyOrder_User_ListView_Adapter buyLVAdapter = new buyOrder_User_ListView_Adapter(buyOrderUserActivity.this,showBuyOrderList);
+        buyLVAdapter = new buyOrder_User_ListView_Adapter(SellOrderUserActivity.this,showBuyOrderList);
+        sellLVAdapter = new buyOrder_User_ListView_Adapter(SellOrderUserActivity.this,showSellOrderList);
+        listView_sell.setAdapter(sellLVAdapter);
         listView_buy.setAdapter(buyLVAdapter);
         buyLVAdapter.notifyDataSetChanged();
-        //卖出
-        buyOrder_User_ListView_Adapter sellLVAdapter = new buyOrder_User_ListView_Adapter(buyOrderUserActivity.this,showSellOrderList);
-        listView_sell.setAdapter(sellLVAdapter);
         sellLVAdapter.notifyDataSetChanged();
-
     }
 
     public void finishThis(View view) {
@@ -224,20 +218,27 @@ public class buyOrderUserActivity extends AppCompatActivity {
     public void addCount(View view) {
         if (!editText_Count.getText().toString().equals("")) {
             int int1 = Integer.parseInt(editText_Count.getText() + "");
-            int1 = int1 + 1;
-            editText_Count.setText(int1 + "");
+            if (int1<Integer.parseInt(tv_maxDealed.getText()+""))
+            {
+                int1 = int1 + 1;
+                editText_Count.setText(int1 + "");
+            }else
+            {
+                Toast.makeText(sellOrderUserActivity.this,"已经是最大持有量！",Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
-    //访问数据库--》向orders表中插入买订单
-    private class BuyOrdersAcsncTask extends AsyncTask<String,Integer,String> {
+    //访问数据库--》向orders表中插入卖订单
+    private class SellOrdersAcsncTask extends AsyncTask<String,Integer,String> {
 
         /**
          * onPreExecute方法用于执行后台任务前的UI操作
          */
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(buyOrderUserActivity.this);
+            progressDialog = new ProgressDialog(SellOrderUserActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
             progressDialog.setTitle("提示");
             progressDialog.setMessage("加载数据中。。。");
@@ -256,7 +257,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
         protected String doInBackground(String... orders) {
             OrderDao orderDao = new OrderDaoImpl();
 
-            IsBuy =  orderDao.insertOrder(order);
+            IsSell =  orderDao.insertOrder(order);
             return null;
         }
         /**
@@ -267,17 +268,16 @@ public class buyOrderUserActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.cancel();
-            if (IsBuy)
-                Toast.makeText(buyOrderUserActivity.this,"卖出成功！",Toast.LENGTH_LONG).show();
+            if (IsSell)
+                Toast.makeText(SellOrderUserActivity.this,"卖出成功！",Toast.LENGTH_LONG).show();
             else
-                Toast.makeText(buyOrderUserActivity.this,"卖出失败！",Toast.LENGTH_LONG).show();
+                Toast.makeText(SellOrderUserActivity.this,"卖出失败！",Toast.LENGTH_LONG).show();
             initSpinner();
-            //initAutoTextView();
         }
 
     }
 
-    //访问数据库--》得到股票编号和名称
+    //访问数据库--》得到所持有股票编号和名称
     private class GetStockAcsncTask extends AsyncTask<String,Integer,String> {
 
         /**
@@ -285,7 +285,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(buyOrderUserActivity.this);
+            progressDialog = new ProgressDialog(SellOrderUserActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
             progressDialog.setTitle("提示");
             progressDialog.setMessage("加载数据中。。。");
@@ -301,9 +301,10 @@ public class buyOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(String... strings) {
-            StockDao stockDao = new StockDaoImpl();
-            stockList= stockDao.queryAllStock();
-            return null;
+            StockDaoImpl stockDao = new StockDaoImpl();
+            stockList= stockDao.queryStockBelongUser(user_id);
+            positionList = stockDao.queryStockBelongUserPosition(user_id);
+        return null;
         }
         /**
          * onPostExecute方法用于在执行完后更新UI，显示结果
@@ -326,7 +327,7 @@ public class buyOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(buyOrderUserActivity.this);
+            progressDialog = new ProgressDialog(SellOrderUserActivity.this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
             progressDialog.setTitle("提示");
             progressDialog.setMessage("加载数据中。。。");
@@ -383,7 +384,6 @@ public class buyOrderUserActivity extends AppCompatActivity {
             initViewListView();
         }
     }
-
     //防止进程对话框出错（that was originally added here）
     @Override
     protected void onPause() {

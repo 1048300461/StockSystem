@@ -93,11 +93,12 @@
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <ListView
-            android:background="@color/colorWhite"
             android:id="@+id/orderList_listView_ShowTotal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite">
 
         </ListView>
     </LinearLayout>
