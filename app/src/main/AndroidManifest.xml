@@ -30,13 +30,14 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StockDeatailActivity"></activity>
+        <activity android:name=".StockDeatailActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
+        
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />

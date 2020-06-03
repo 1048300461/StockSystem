@@ -224,7 +224,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
                 editText_Count.setText(int1 + "");
             }else
             {
-                Toast.makeText(sellOrderUserActivity.this,"已经是最大持有量！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SellOrderUserActivity.this,"已经是最大持有量！",Toast.LENGTH_SHORT).show();
             }
 
         }
