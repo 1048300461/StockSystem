@@ -62,6 +62,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
 
     //listView的Adapter
     private buyOrder_User_ListView_Adapter buyLVAdapter;
+
     private buyOrder_User_ListView_Adapter sellLVAdapter;
 
     //数据库中的股票编号和名称
