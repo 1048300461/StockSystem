@@ -30,19 +30,19 @@ public class StockDataUtil {
 
     /**
      * 获取沪深股市信息
-     * @param which sh为上海 sz为深圳
-     * @param stock_id 股票代码
+     * @param whichStock sh为上海 sz为深圳
+     * @param whichStock 股票代码
      * @return 结果
      * @author zc
      */
-    public static String getLatestInfo(String which, int stock_id){
+    public static String getLatestInfo(String whichStock){
         String result = null;
         //请求接口地址
         String url ="http://hq.sinajs.cn/";
         //请求参数
         Map params = new HashMap();
         //股票编号，上海股市以sh开头，深圳股市以sz开头
-        params.put("list", which + stock_id);
+        params.put("list", whichStock);
 
         try{
             result = net(url, params, "GET");
@@ -117,14 +117,14 @@ public class StockDataUtil {
         return parseResult;
     }
 
-    public static String[] getGraphUrl(String which, int stock_id){
+    public static String[] getGraphUrl(String whichStock){
         String[] graphUrls = new String[4];
         String[] graphTypes = {"min", "daily", "weekly", "monthly"};
         String begin = "http://image.sinajs.cn/newchart/";
         String middle = "/n/";
         String end = ".gif";
         for(int i = 0; i < graphTypes.length; i++){
-            graphUrls[i] = begin + graphTypes[i] + middle + which + stock_id + end;
+            graphUrls[i] = begin + graphTypes[i] + middle + whichStock + end;
         }
 
         return graphUrls;
@@ -132,7 +132,7 @@ public class StockDataUtil {
 
     public static void main(String[] args) {
 
-        String stockInfo = getLatestInfo("sh", 601006);
+        String stockInfo = getLatestInfo("sh601006");
         String[] parseStockInfoReuslt = parseStockInfo(stockInfo);
 //        String bigpanInfo = getBigPan("sh", 601006);
 //        String[] parseBigPanResult = parseBigPan(bigpanInfo);

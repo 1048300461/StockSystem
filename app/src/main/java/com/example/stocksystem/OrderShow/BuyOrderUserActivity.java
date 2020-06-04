@@ -59,6 +59,9 @@ public class BuyOrderUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy_order_user);
+        Bundle bundle = this.getIntent().getExtras();
+        final String codeInfo = bundle.getString("codeInfo");
+
         //实例页面控件
         tv_username = findViewById(R.id.buy_order_user_tvUser);
         spinner = findViewById(R.id.buyOrder_spinner_type);

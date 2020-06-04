@@ -23,10 +23,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
+import com.example.stocksystem.OrderShow.OrdersListActivity;
 import com.example.stocksystem.OrderShow.SellOrderUserActivity;
 import com.example.stocksystem.R;
 import com.example.stocksystem.StockDeatailActivity;
 import com.example.stocksystem.TestVoiceActivity;
+import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.dao.impl.StockDaoImpl;
+import com.example.stocksystem.util.StockDataUtil;
 import com.google.gson.Gson;
 import com.iflytek.cloud.RecognizerResult;
 import com.iflytek.cloud.SpeechConstant;
@@ -36,6 +40,7 @@ import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ChatMainPageActivity extends AppCompatActivity {
@@ -49,16 +54,16 @@ public class ChatMainPageActivity extends AppCompatActivity {
     int index=0;//记录跳向哪个界面
     int times = 0;
     private Resources resources;
-    private String[] operations = new String[]{"购买", "卖出", "折线图", "查询股票", "持股", "历史订单"};
+    private String[] operations = new String[]{"购买股票", "卖出股票", "查询股票", "查询持股信息", "查询历史订单"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
-            "\n"+"1. 购买股票 + 股票id(股票名称)"+
-            "\n"+"2. 卖出股票 + 股票id(股票名称)"+
-            "\n"+"3. 查询折线图 + 股票id(股票名称)"+
-            "\n"+"4. 查询股票 + 股票id(股票名称)"+
-            "\n"+"5. 查询持股信息"+
-            "\n"+"6. 查询历史订单");
-    static MsgAdapter msgAdapter;
+            "\n"+"1. 购买股票 股票代码(股票名称)"+
+            "\n"+"2. 卖出股票"+
+            "\n"+"3. 查询股票 股票代码(股票名称)"+
+            "\n"+"4. 查询持股信息"+
+            "\n"+"5. 查询历史订单");
+    private MsgAdapter msgAdapter;
+    private boolean isLoadSuccess = false;
 
     private static final String TAG = "ChatMainPageActivity";
 
@@ -109,6 +114,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
 
         //点击发送后的监听事件
         btn_send.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 String content = edt_msg.getText().toString().trim();
@@ -123,62 +129,40 @@ public class ChatMainPageActivity extends AppCompatActivity {
                     int code = getActivityCode(content);
                     Log.d(TAG, "onClick: " + code);
                     if(code != -1){
-                        showDialog(content, code);
+                        String showContent = operations[code];
+                        content = content.replace(showContent, "");
+                        content = content.replace(" ", "");
+                        String codeInfo = "";
+                        if(code == 0 || code == 2){
+                            if(content.length() == 0){
+                                rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"您未说明股票名称/股票代码哦。");
+                                reciveMsg(rcv_msg, msgAdapter);
+                            }else{
+                                try{
+                                    //判断用户输入的是股票代码还是名称
+                                    Log.d(TAG, "onClick: " + content);
+                                    int stockId = Integer.parseInt(content);
+                                    codeInfo = getCorrespondStock(stockId);
+                                }catch (Exception e){
+                                    Log.d(TAG, "onClick: " + content);
+                                    codeInfo = getCorrespondStock(content);
+                                }
+                                if(codeInfo.length() == 0){
+                                    rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股没有查到该股票哦。");
+                                    reciveMsg(rcv_msg, msgAdapter);
+                                }else{
+                                    showDialog(showContent, code, codeInfo);
+                                }
+                            }
+                        }else{
+                            showDialog(showContent, code, "");
+                        }
+
                     }else{
                         rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股不明白您的需求呢");
                         reciveMsg(rcv_msg, msgAdapter);
                     }
                 }
-//                String send_content=edt_msg.getText().toString().trim();
-//                if (!TextUtils.isEmpty(send_content)){
-//                    //模拟发送消息
-//                    MsgEntity send_msg=new MsgEntity(MsgEntity.SEND_MSG,send_content);
-//                    list.add(send_msg);
-//                    //刷新RecyclerView显示
-//                    msgAdapter.notifyItemInserted(list.size()-1);
-//
-//                    //模拟接受消息
-//                    MsgEntity rcv_msg=null;
-//                    if(send_content.equals("buy")||send_content.equals("sell")){
-//                        rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"请确认是否跳转到"+send_content+"功能界面"+
-//                                "\n"+"回复[yes]进行跳转");
-//                        switch (send_content){//记录用户选择要跳转到哪个功能界面
-//                            case "buy":
-//                                index=1;
-//                            case "sell":
-//                                index=2;
-//                            case "detail":
-//                                index=3;
-//                            case "orderlist":
-//                                index=4;
-//                        }
-//                        flag=true;//此时为待跳转状态
-//                        reciveMsg(rcv_msg,msgAdapter);
-//                    }else {
-//                        if(flag) {//如果此时是待跳转状态
-//                            flag = false;
-//                            if (send_content.equals("yes")) {//同意跳转，跳转界面
-//                                switch (index) {
-//                                    case 1:
-////                                        startActivity(new Intent(ChatMainPageActivity.this, buyActivity.class));
-//                                    case 2:
-////                                        startActivity(new Intent(ChatMainPageActivity.this, sellActivity.class));
-//                                    case 3:
-////                                        startActivity(new Intent(ChatMainPageActivity.this, detailActivity.class));
-//                                    case 4:
-////                                        startActivity(new Intent(ChatMainPageActivityy.this, orderlistActivity.class));
-//                                }
-//                            }else {
-//                                rcv_msg = new MsgEntity(MsgEntity.RCV_MSG, "您选择了不跳转"+"\n"+"请重新输入想要进行的操作");
-//                                reciveMsg(rcv_msg,msgAdapter);
-//                            }
-//                        }else {
-//                            rcv_msg = new MsgEntity(MsgEntity.RCV_MSG, "您的输入无效"+"\n"+"请重新输入想要进行的操作");
-//                            reciveMsg(rcv_msg,msgAdapter);
-//                        }
-//                    }
-//                    edt_msg.setText("");//清空消息输入框
-//                }
                 edt_msg.setText("");
             }
         });
@@ -276,31 +260,40 @@ public class ChatMainPageActivity extends AppCompatActivity {
         }
     }
 
-    private void showDialog(String content, final int code){
+    private void showDialog(String showContent, final int code, final String args){
         final AlertDialog.Builder builder = new AlertDialog.Builder(ChatMainPageActivity.this);
+
         builder.setIcon(R.drawable.ic_question_answer_black_24dp);
-        builder.setMessage("确定进入" + content + "吗");
+        builder.setMessage("确定进入" + showContent + "页面吗");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (code){
-                    case 0:
+                    case 0://购买股票
+                        Bundle bundle0 = new Bundle();
+                        bundle0.putString("codeInfo", args);
                         Intent intent0 = new Intent(ChatMainPageActivity.this, BuyOrderUserActivity.class);
+                        intent0.putExtras(bundle0);
                         startActivity(intent0);
                         break;
-                    case 1:
+                    case 1://出售股票
                         Intent intent1 = new Intent(ChatMainPageActivity.this, SellOrderUserActivity.class);
                         startActivity(intent1);
                         break;
-                    case 2:
+                    case 2:////查询股票
+                        Bundle bundle2 = new Bundle();
+                        bundle2.putString("codeInfo", args);
                         Intent intent2 = new Intent(ChatMainPageActivity.this, StockDeatailActivity.class);
+                        intent2.putExtras(bundle2);
                         startActivity(intent2);
                         break;
-                    case 3:
+                    case 3://查询股票
                         break;
                     case 4:
                         break;
-                    case 5:
+                    case 5://查看历史交易订单
+                        Intent intent5 = new Intent(ChatMainPageActivity.this, OrdersListActivity.class);
+                        startActivity(intent5);
                         break;
                     default:
                         break;
@@ -320,6 +313,11 @@ public class ChatMainPageActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * 获取对应操作的代码
+     * @param content
+     * @return
+     */
     private int getActivityCode(String content){
         for (int i = 0; i < operations.length; i++) {
             if(content.contains(operations[i])){
@@ -327,5 +325,66 @@ public class ChatMainPageActivity extends AppCompatActivity {
             }
         }
         return -1;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getCorrespondStock(final String stockName){
+        String code = "";
+        final Stock[] stock = {null};
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                stock[0] = new StockDaoImpl().findStockByName(stockName);
+                isLoadSuccess = true;
+            }
+        }).start();
+
+        while (!isLoadSuccess){ }
+        isLoadSuccess = false;
+
+        if(stock[0] != null){
+            code = stock[0].getStock_id() + "";
+            int length = 6 - code.length();
+            code = String.join("", Collections.nCopies(length,"0")) + code;
+
+            if(stock[0].getType() == 0){
+                code = "sh" + code;
+            }else{
+                code = "sz" + code;
+            }
+        }
+
+        return code;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private String getCorrespondStock(final int stockId){
+        String code = "";
+        final Stock[] stock = {null};
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                stock[0] = new StockDaoImpl().findStockById(stockId);
+                isLoadSuccess = true;
+            }
+        }).start();
+
+        while (!isLoadSuccess){ }
+        isLoadSuccess = false;
+
+        if(stock[0] != null){
+            code = stockId + "";
+            int length = 6 - code.length();
+            code = String.join("", Collections.nCopies(length,"0")) + code;
+            if(stock[0].getType() == 0){
+                code = "sh" + code;
+            }else{
+                code = "sz" + code;
+            }
+        }
+
+        return code;
     }
 }

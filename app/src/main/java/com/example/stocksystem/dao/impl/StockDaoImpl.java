@@ -32,9 +32,10 @@ public class StockDaoImpl implements StockDao {
         return null;
     }
 
+
     @Override
     public Stock findStockById(int stockId) {
-        Stock stock = new Stock();
+        Stock stock = null;
         try{
             Connection conn = DataBaseUtil.getSQLConnection();
             String sql = "select * from stock where stock_id=" + stockId;
@@ -42,9 +43,34 @@ public class StockDaoImpl implements StockDao {
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next())
             {
+                stock = new Stock();
                 stock.setName(rs.getString("name"));
                 stock.setStock_id(rs.getInt("stock_id"));
-                stock.setTemp(rs.getInt("temp"));
+                stock.setType(rs.getInt("type"));
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return stock;
+    }
+
+    @Override
+    public Stock findStockByName(String stockName) {
+        Stock stock = null;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select * from stock where name='"+stockName+"';";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next())
+            {
+                stock = new Stock();
+                stock.setName(rs.getString("name"));
+                stock.setStock_id(rs.getInt("stock_id"));
+                stock.setType(rs.getInt("type"));
             }
             rs.close();
             statement.close();
@@ -68,7 +94,7 @@ public class StockDaoImpl implements StockDao {
                 Stock stock = new Stock();
                 stock.setName(rs.getString("name"));
                 stock.setStock_id(rs.getInt("stock_id"));
-                stock.setTemp(rs.getInt("temp"));
+                stock.setType(rs.getInt("type"));
                 lists.add(stock);
             }
             rs.close();
@@ -93,7 +119,7 @@ public class StockDaoImpl implements StockDao {
                 Stock stock = new Stock();
                 stock.setName(rs.getString("name"));
                 stock.setStock_id(rs.getInt("stock_id"));
-                stock.setTemp(0);
+                stock.setType(rs.getInt("type"));
                 lists.add(stock);
             }
             rs.close();
