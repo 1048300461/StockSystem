@@ -39,6 +39,7 @@
         <activity android:name=".ChatMainPage.ChatMainPageActivity"/>
         <activity android:name=".OrderShow.BuyOrderUserActivity"/>
         <activity android:name=".OrderShow.SellOrderUserActivity"/>
+        <activity android:name=".OrderShow.OrdersListActivity"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
