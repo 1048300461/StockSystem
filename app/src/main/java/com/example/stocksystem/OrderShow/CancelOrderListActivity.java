@@ -40,6 +40,7 @@ public class CancelOrderListActivity extends AppCompatActivity {
     public static int user_id = 10000002;
 
     private CancelOrderList_ListView_Adapter lvAdapter;//listView的自定义配置器
+
     private List<Order> orderList;  //数据库中数据
     private Map<String,String> stockNameMap = new HashMap<String, String>();
     private boolean IsCancelOrder;  //取消订单是否成功
