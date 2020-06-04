@@ -10,7 +10,6 @@
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,18 +19,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="买入"
+                android:text="卖出"
                 android:textSize="25sp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true" />
             <TextView
-                android:id="@+id/buy_order_user_tvUser"
+                android:id="@+id/sell_order_user_tvUser"
                 android:text="(未登录)"
                 android:textSize="20sp"
                 android:layout_toRightOf="@id/title_tv"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
