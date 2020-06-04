@@ -1,6 +1,7 @@
 package com.example.stocksystem;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -211,4 +212,6 @@ public class SignInActivity extends AppCompatActivity {
     public void close(View view){
         finish();
     }
+
+
 }

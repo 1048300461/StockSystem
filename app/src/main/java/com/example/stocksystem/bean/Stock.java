@@ -15,9 +15,9 @@ public class Stock {
      */
     private String name;
     /**
-     * 保留属性
+     * 标记时属于哪个股市
      */
-    private int temp;
+    private int type;
 
     public int getStock_id() {
         return stock_id;
@@ -35,8 +35,8 @@ public class Stock {
         this.name = name;
     }
 
-    public int getTemp() {
-        return temp;
+    public int getType() {
+        return type;
     }
 
     @Override
@@ -44,12 +44,12 @@ public class Stock {
         return "Stock{" +
                 "stock_id=" + stock_id +
                 ", name='" + name + '\'' +
-                ", temp=" + temp +
+                ", temp=" + type +
                 '}';
     }
 
-    public void setTemp(int temp) {
-        this.temp = temp;
+    public void setType(int type) {
+        this.type = type;
     }
 
 }

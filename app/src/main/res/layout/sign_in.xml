@@ -72,7 +72,7 @@
             />
         <EditText
             android:id="@+id/sign_in_password"
-            android:layout_width="300dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:background="@null"
             android:inputType="textPassword"
@@ -110,7 +110,7 @@
                 />
             <EditText
                 android:id="@+id/sign_in_sure_password"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:inputType="textPassword"

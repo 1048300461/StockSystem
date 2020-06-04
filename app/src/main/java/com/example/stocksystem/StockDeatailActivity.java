@@ -32,6 +32,9 @@ public class StockDeatailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_deatail);
 
+        Bundle bundle = this.getIntent().getExtras();
+        final String codeInfo = bundle.getString("codeInfo");
+
         time_img = findViewById(R.id.time_img);
         day_img = findViewById(R.id.day_img);
         week_img = findViewById(R.id.week_img);
@@ -47,13 +50,13 @@ public class StockDeatailActivity extends AppCompatActivity {
 
         isLoadSuccess = false;
 
-        String[] urls = StockDataUtil.getGraphUrl("sh", 601006);
+        String[] urls = StockDataUtil.getGraphUrl(codeInfo);
 
         final String[] stockInfo = {null};
         new Thread(new Runnable() {
             @Override
             public void run() {
-                stockInfo[0] = StockDataUtil.getLatestInfo("sh", 601006);
+                stockInfo[0] = StockDataUtil.getLatestInfo(codeInfo);
                 isLoadSuccess = true;
             }
         }).start();
@@ -87,9 +90,6 @@ public class StockDeatailActivity extends AppCompatActivity {
         Glide.with(this).asBitmap().load(urls[2]).into(week_img);
         Glide.with(this).asBitmap().load(urls[3]).into(month_img);
         Log.d(TAG, "onCreate: " + urls[0]);
-
-
-
 
     }
 

@@ -2,6 +2,7 @@ package com.example.stocksystem;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.stocksystem.ChatMainPage.ChatMainPageActivity;
 import com.example.stocksystem.bean.User;
 import com.example.stocksystem.dao.LoginOrSignInDao;
 import com.example.stocksystem.dao.UserDao;
@@ -38,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        boolean isLogin = isLogin();
+        if(isLogin){
+            goMainActivity();
+        }
 
         imageView_pwd_SOH = findViewById(R.id.login_pwd_ShowOrHide);
         editText_pwd = findViewById(R.id.login_editText_password);
@@ -191,13 +198,36 @@ public class LoginActivity extends AppCompatActivity {
 
     //登录跳转Activity
     private void goMainActivity(){
-      //  Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
-      //  startActivity(intent);
+        Intent intent = new Intent(LoginActivity.this, ChatMainPageActivity.class);
+        writeLogin();
+        startActivity(intent);
+        finish();
     }
+
 
     //注册跳转Activit
     public void goSignIn(View view){
         Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * 判断是否登入过
+     * @return
+     */
+    private boolean isLogin(){
+        SharedPreferences sp = getSharedPreferences("isLogin",MODE_PRIVATE);
+        boolean isLogin = sp.getBoolean("isLogin", false);
+        return isLogin;
+    }
+
+    /**
+     * 写入登入
+     */
+    private void writeLogin(){
+        SharedPreferences sp = getSharedPreferences("isLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("isLogin", true);
+        editor.apply();
     }
 }
