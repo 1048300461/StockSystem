@@ -357,6 +357,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
             //查询出的结果后五项为最新的
             if (sqlBuyOrders.size()<5)
             {
+                
                 showBuyOrderList = sqlBuyOrders;
             }else
             {
