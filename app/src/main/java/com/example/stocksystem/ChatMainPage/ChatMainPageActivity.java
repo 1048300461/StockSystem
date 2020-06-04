@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
+import com.example.stocksystem.OrderShow.CancelOrderListActivity;
 import com.example.stocksystem.OrderShow.OrdersListActivity;
 import com.example.stocksystem.OrderShow.SellOrderUserActivity;
 import com.example.stocksystem.R;
@@ -54,14 +55,15 @@ public class ChatMainPageActivity extends AppCompatActivity {
     int index=0;//记录跳向哪个界面
     int times = 0;
     private Resources resources;
-    private String[] operations = new String[]{"购买股票", "卖出股票", "查询股票", "查询持股信息", "查询历史订单"};
+    private String[] operations = new String[]{"购买股票", "卖出股票", "查询股票", "查询持股信息", "查询历史订单", "取消交易"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
             "\n"+"1. 购买股票 股票代码(股票名称)"+
             "\n"+"2. 卖出股票"+
             "\n"+"3. 查询股票 股票代码(股票名称)"+
             "\n"+"4. 查询持股信息"+
-            "\n"+"5. 查询历史订单");
+            "\n"+"5. 查询历史订单" +
+            "\n"+"6. 取消交易");
     private MsgAdapter msgAdapter;
     private boolean isLoadSuccess = false;
 
@@ -293,8 +295,9 @@ public class ChatMainPageActivity extends AppCompatActivity {
                         Intent intent4 = new Intent(ChatMainPageActivity.this, OrdersListActivity.class);
                         startActivity(intent4);
                         break;
-                    case 5:
-
+                    case 5://取消交易
+                        Intent intent5 = new Intent(ChatMainPageActivity.this, CancelOrderListActivity.class);
+                        startActivity(intent5);
                         break;
                     default:
                         break;

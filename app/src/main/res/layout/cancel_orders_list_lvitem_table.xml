@@ -4,89 +4,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TableLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TableRow>
-            <TableLayout
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TableRow >
-                    <TextView
-                        android:layout_column="1"
-                        android:id="@+id/cancel_ordersList_tv_stockName"
-                        android:text="股票名称"
-                        android:textColor="@color/cancelTextColor"
-                        android:textSize="20sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:id="@+id/cancel_ordersList_tv_type"
-                        android:textColor="@color/cancelTextColor"
-                        android:text="买"
-                        android:background="#CCFFFF"
-                        android:textSize="15sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:id="@+id/cancel_ordersList_tv_time"
-                        android:textColor="@color/cancelTextColor"
-                        android:textSize="10sp"
-                        android:text="2019-06-14,23:27:02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_stockName"
+            android:text="股票名称"
+            android:textColor="@color/cancelTextColor"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/cancel_ordersList_tv_type"/>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_type"
+            android:textColor="@color/cancelTextColor"
+            android:text="买"
+            android:background="#CCFFFF"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/cancel_ordersList_tv_time"
+            android:textColor="@color/cancelTextColor"
+            android:textSize="10sp"
+            android:text="2019-06-14,23:27:02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cancel_ordersList_tv_stockName"
+            android:layout_toRightOf="@id/cancel_ordersList_tv_type"/>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_price"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp"
+            android:textColor="@color/cancelTextColor"
+            android:text="5.790"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cancel_ordersList_tv_stockName"/>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_dealed"
+            android:layout_gravity="center"
+            android:text="200"
+            android:textColor="@color/cancelTextColor"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/cancel_ordersList_tv_type2"/>
 
-            </TableLayout>
-            <TableLayout>
-                <TableRow android:layout_marginTop="10dp"
-                    >
-                    <TextView
-                        android:id="@+id/cancel_ordersList_tv_price"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="20dp"
-                        android:textSize="20sp"
-                        android:textColor="@color/cancelTextColor"
-                        android:text="5.790"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/cancel_ordersList_tv_dealed"
-                        android:layout_gravity="center"
-                        android:text="200"
-                        android:textColor="@color/cancelTextColor"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:paddingLeft="20dp"
-                android:layout_marginLeft="15dp">
-                <TextView
-                    android:id="@+id/cancel_ordersList_tv_type2"
-                    android:textColor="@color/cancelTextColor"
-                    android:text="买入"
-                    android:textSize="15sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/cancel_ordersList_tv_total"
-                    android:textColor="@color/cancelTextColor"
-                    android:text="未成交"
-                    android:textSize="15sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </TableLayout>
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_type2"
+            android:textColor="@color/cancelTextColor"
+            android:text="买入"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"/>
+        <TextView
+            android:id="@+id/cancel_ordersList_tv_total"
+            android:textColor="@color/cancelTextColor"
+            android:text="未成交"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="50dp"/>
+    </RelativeLayout>
 
 
 </LinearLayout>
