@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,19 +25,23 @@ import com.example.stocksystem.bean.UserPosition;
 import com.example.stocksystem.dao.OrderDao;
 import com.example.stocksystem.dao.OrdersListDao;
 import com.example.stocksystem.dao.StockDao;
+import com.example.stocksystem.dao.UserPositionDao;
 import com.example.stocksystem.dao.impl.OrderDaoImpl;
 import com.example.stocksystem.dao.impl.OrdersListDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
+import com.example.stocksystem.dao.impl.UserPositionDaoImpl;
 import com.example.stocksystem.util.StockDataUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SellOrderUserActivity extends AppCompatActivity {
 
     public static String username = "wang";
     public static int user_id = 10000002;
+    private static final String TAG = "SellOrderUserActivity";
     //页面控件
     private TextView tv_username;    //显示用户名
     private Spinner spinner;        //用于显示选择的股票
@@ -107,16 +112,18 @@ public class SellOrderUserActivity extends AppCompatActivity {
                         order.setCanceled(0);
                         order.setTemp(0);
                         sellTask.execute();
+
+                        Toast.makeText(SellOrderUserActivity.this,"卖出成功，等待交易成功",Toast.LENGTH_SHORT).show();
                     }else
                     {
                         Toast.makeText(SellOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
                     }
                 }else
                 {
-                    Toast.makeText(SellOrderUserActivity.this,"用户未登录！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SellOrderUserActivity.this,"操作失败！",Toast.LENGTH_SHORT).show();
                 }
 
-
+                finish();
             }
         });
 
@@ -165,7 +172,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
     private void initSpinner(){
         //下拉框选择用户类型
         final String []strType= new String[stockList.size()+1];
-        strType[0] = "请选择股票名称";
+        strType[0] = "列表为空表示未拥有股票";
         for (int i=0;i<stockList.size();i++)
         {
             strType[i+1] = stockList.get(i).getStock_id()+"--"+stockList.get(i).getName();
@@ -261,7 +268,6 @@ public class SellOrderUserActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... orders) {
             OrderDao orderDao = new OrderDaoImpl();
-
             IsSell =  orderDao.insertOrder(order);
             return null;
         }
@@ -306,10 +312,25 @@ public class SellOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(String... strings) {
-            StockDaoImpl stockDao = new StockDaoImpl();
-            stockList= stockDao.queryStockBelongUser(user_id);
-            positionList = stockDao.queryStockBelongUserPosition(user_id);
-        return null;
+//            StockDaoImpl stockDao = new StockDaoImpl();
+//            stockList= stockDao.queryStockBelongUser(user_id);
+//            positionList = stockDao.queryStockBelongUserPosition(user_id);
+
+            UserPositionDao userPositionDao = new UserPositionDaoImpl();
+            StockDao stockDao = new StockDaoImpl();
+            List<Integer> stockIds = userPositionDao.findUserStockId(user_id);
+            Log.d(TAG, "doInBackground: " + stockIds.size());
+            stockList = new ArrayList<>();
+            for(int i = 0; i < stockIds.size(); i++){
+                Stock stock = stockDao.findStockById(stockIds.get(i));
+                stockList.add(stock);
+                Log.d(TAG, "doInBackground: " + stock.getName());
+            }
+
+            positionList = new StockDaoImpl().queryStockBelongUserPosition(user_id);
+//            Log.d(TAG, "doInBackground: " + user_id);
+            Log.d(TAG, "doInBackground: position" + positionList.size());
+            return null;
         }
         /**
          * onPostExecute方法用于在执行完后更新UI，显示结果
@@ -350,33 +371,84 @@ public class SellOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(Integer... StrockId) {
-            OrdersListDao listDao = new OrdersListDaoImpl();
-            List<Order> sqlBuyOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,0);//买入
-            List<Order> sqlSellOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,1);//卖出
-            //买入
-            //查询出的结果后五项为最新的
-            if (sqlBuyOrders.size()<5)
-            {
-                
-                showBuyOrderList = sqlBuyOrders;
-            }else
-            {
-                for (int i=1;i<6;i++)
-                {
-                    showBuyOrderList.add(sqlBuyOrders.get(sqlBuyOrders.size()-i));
+            final String[] stockInfo = {null};
+            isLoadSuccess = false;
+            int type = -1;
+            String code = OnItemStockId + "";
+            for(int i = 0; i < stockList.size(); i++){
+                if(stockList.get(i).getStock_id() == OnItemStockId){
+                    type = stockList.get(i).getType();
                 }
             }
-            //卖出
-            if (sqlSellOrders.size()<5)
-            {
-                showSellOrderList = sqlSellOrders;
-            }else
-            {
-                for (int i=1;i<6;i++)
-                {
-                    showSellOrderList.add(sqlSellOrders.get(sqlSellOrders.size()-i));
-                }
+            int length = 6 - code.length();
+            code = String.join("", Collections.nCopies(length,"0")) + code;
+            if(type == 0){
+                code = "sh" + code;
+            }else{
+                code = "sz" + code;
             }
+
+            final String finalCode = code;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    stockInfo[0] = StockDataUtil.getLatestInfo(finalCode);
+                    isLoadSuccess = true;
+                }
+            }).start();
+
+            //等待数据加载完毕
+            while (!isLoadSuccess){ }
+            isLoadSuccess = false;
+
+
+            String[] infos = StockDataUtil.parseStockInfo(stockInfo[0]);
+            showSellOrderList.clear();
+            showBuyOrderList.clear();
+            for(int i = 9; i < 19; i = i + 2){
+                Order order = new Order();
+                order.setDealed(Integer.parseInt(infos[i]));
+                order.setPrice(Double.parseDouble(infos[i+1]));
+                order.setType(0);
+                //Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                showBuyOrderList.add(order);
+            }
+
+            for(int i = 19; i < 29; i = i + 2){
+                Order order = new Order();
+                order.setDealed(Integer.parseInt(infos[i]));
+                order.setPrice(Double.parseDouble(infos[i+1]));
+                order.setType(1);
+                //Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                showSellOrderList.add(order);
+            }
+//            OrdersListDao listDao = new OrdersListDaoImpl();
+//            List<Order> sqlBuyOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,0);//买入
+//            List<Order> sqlSellOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,1);//卖出
+//            //买入
+//            //查询出的结果后五项为最新的
+//            if (sqlBuyOrders.size()<5)
+//            {
+//
+//                showBuyOrderList = sqlBuyOrders;
+//            }else
+//            {
+//                for (int i=1;i<6;i++)
+//                {
+//                    showBuyOrderList.add(sqlBuyOrders.get(sqlBuyOrders.size()-i));
+//                }
+//            }
+//            //卖出
+//            if (sqlSellOrders.size()<5)
+//            {
+//                showSellOrderList = sqlSellOrders;
+//            }else
+//            {
+//                for (int i=1;i<6;i++)
+//                {
+//                    showSellOrderList.add(sqlSellOrders.get(sqlSellOrders.size()-i));
+//                }
+//            }
             return null;
         }
         /**
@@ -399,6 +471,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
