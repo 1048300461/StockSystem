@@ -3,6 +3,7 @@ package com.example.stocksystem.OrderShow;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class CancelOrderListActivity extends AppCompatActivity {
     public static int user_id = 10000002;
 
     private CancelOrderList_ListView_Adapter lvAdapter;//listView的自定义配置器
+
     private List<Order> orderList;  //数据库中数据
     private Map<String,String> stockNameMap = new HashMap<String, String>();
     private boolean IsCancelOrder;  //取消订单是否成功
@@ -55,6 +57,7 @@ public class CancelOrderListActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cancel_orders_list);
+        initInfo();
 
         tv_username = findViewById(R.id.cancel_order_list_tvUser);
         listView = findViewById(R.id.cancel_orderList_lv_ShowTotal);
@@ -253,5 +256,11 @@ public class CancelOrderListActivity extends AppCompatActivity {
 
     public void finishThis(View view) {
         finish();
+    }
+
+    private void initInfo(){
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        user_id = sp.getInt("userid", -1);
+        username = sp.getString("name", "null");
     }
 }

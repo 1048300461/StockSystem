@@ -1,6 +1,11 @@
 package com.example.stocksystem.dao;
 
+import com.example.stocksystem.bean.Order;
+import com.example.stocksystem.bean.Stock;
 import com.example.stocksystem.bean.UserPosition;
+
+import java.lang.reflect.Array;
+import java.util.List;
 
 /**
  * author:zc
@@ -30,4 +35,7 @@ public interface UserPositionDao {
      * @return 删除结果
      */
     boolean deleteUserPosition(int userId, int stockId);
+
+    List<Integer> findUserStockId(int userId);
+
 }
