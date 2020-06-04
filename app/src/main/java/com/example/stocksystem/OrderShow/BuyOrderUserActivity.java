@@ -106,12 +106,16 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                         order.setCanceled(0);
                         order.setTemp(0);
                         sellTask.execute();
+
+                        Toast.makeText(BuyOrderUserActivity.this,"购买成功，等待交易成功",Toast.LENGTH_SHORT).show();
                     }else
                     {
                         Toast.makeText(BuyOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
                     }
                 }else
                     Toast.makeText(BuyOrderUserActivity.this,"用户未登录！",Toast.LENGTH_SHORT).show();
+
+                finish();
 
             }
         });
