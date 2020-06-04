@@ -289,11 +289,12 @@ public class ChatMainPageActivity extends AppCompatActivity {
                         break;
                     case 3://查询股票
                         break;
-                    case 4:
+                    case 4://查看历史交易订单
+                        Intent intent4 = new Intent(ChatMainPageActivity.this, OrdersListActivity.class);
+                        startActivity(intent4);
                         break;
-                    case 5://查看历史交易订单
-                        Intent intent5 = new Intent(ChatMainPageActivity.this, OrdersListActivity.class);
-                        startActivity(intent5);
+                    case 5:
+
                         break;
                     default:
                         break;

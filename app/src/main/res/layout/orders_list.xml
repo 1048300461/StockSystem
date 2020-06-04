@@ -3,18 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:onClick="finishThis"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@mipmap/buttoncancel_logo_default"
-            android:background="@color/colorWhite"
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-    </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
@@ -36,59 +25,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-    <TableLayout
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/first_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="成交时间"
+            android:textColor="#7F7F7F"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"/>
 
-        <TableRow>
-            <TableLayout
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TableRow>
+        <TextView
+            android:id="@+id/second_tv"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7F7F7F"
+            android:text="成交价"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/first_tv"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"/>
 
-                    <TextView
-                        android:layout_column="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="成交时间"
-                        android:textColor="#7F7F7F"
-                        android:textSize="20sp" />
-                </TableRow>
+        <TextView
+            android:id="@+id/third_tv"
+            android:layout_gravity="center"
+            android:text="成交量"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/second_tv"
+            android:paddingRight="5dp"
+            android:paddingLeft="15dp"/>
 
-            </TableLayout>
-            <TableLayout>
-                <TableRow android:paddingLeft="20dp">
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="15dp"
-                        android:textSize="20sp"
-                        android:textColor="#7F7F7F"
-                        android:text="成交价"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:paddingLeft="10dp"
-                        android:layout_gravity="center"
-                        android:text="成交量"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout android:layout_marginLeft="10dp"
-                android:paddingLeft="10dp"
-                >
-                <TextView
-                    android:textColor="#7F7F7F"
-                    android:text="成交额"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </TableLayout>
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:textColor="#7F7F7F"
+            android:text="成交额"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/third_tv"
+            android:paddingRight="5dp"
+            android:paddingLeft="15dp"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
@@ -96,7 +81,7 @@
 
         <ListView
             android:id="@+id/orderList_listView_ShowTotal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite">
 
