@@ -41,6 +41,13 @@ public interface StockDao {
     Stock findStockById(int stockId);
 
     /**
+     * 根据名字找到股票id
+     * @param stockName 股票名字
+     * @return
+     */
+    Stock findStockByName(String stockName);
+
+    /**
      * 查询所有的股票id和名称
      * @return
      */
