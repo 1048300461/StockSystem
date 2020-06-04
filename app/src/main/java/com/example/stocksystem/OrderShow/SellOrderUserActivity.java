@@ -354,7 +354,6 @@ public class SellOrderUserActivity extends AppCompatActivity {
             List<Order> sqlBuyOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,0);//买入
             List<Order> sqlSellOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,1);//卖出
             //买入
-
             //查询出的结果后五项为最新的
             if (sqlBuyOrders.size()<5)
             {
