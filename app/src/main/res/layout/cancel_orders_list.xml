@@ -10,84 +10,75 @@
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:onClick="finishThis"
-            android:layout_marginLeft="10dp"
-            android:drawableLeft="@mipmap/buttoncancel_logo_default"
-            android:background="@color/colorWhite"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp" />
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:paddingLeft="60dp"
-                android:layout_gravity="center"
-                android:textSize="25sp"
-                android:text="撤单"
+                android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="撤单"
+                android:textSize="25sp"
+                android:layout_centerHorizontal="true"/>
             <TextView
                 android:id="@+id/cancel_order_list_tvUser"
                 android:text="(未登录)"
                 android:textSize="20sp"
-                android:layout_gravity="center"
+                android:layout_toRightOf="@id/title_tv"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
-    <TableLayout
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/first_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="委托时间"
+            android:textColor="#7F7F7F"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"/>
 
-        <TableRow>
-            <TableLayout
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TableRow>
+        <TextView
+            android:id="@+id/second_tv"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:textColor="#7F7F7F"
+            android:text="委托价"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/first_tv"
+            android:paddingLeft="15dp"
+            android:paddingRight="5dp"/>
 
-                    <TextView
-                        android:layout_column="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="委托时间"
-                        android:textColor="#7F7F7F"
-                        android:textSize="20sp" />
-                </TableRow>
+        <TextView
+            android:id="@+id/third_tv"
+            android:layout_gravity="center"
+            android:text="委托量"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/second_tv"
+            android:paddingRight="5dp"
+            android:paddingLeft="15dp"/>
 
-            </TableLayout>
-            <TableLayout>
-                <TableRow android:paddingLeft="20dp">
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp"
-                        android:textSize="20sp"
-                        android:textColor="#7F7F7F"
-                        android:text="委托价"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:paddingLeft="20dp"
-                        android:layout_gravity="center"
-                        android:text="委托量"
-                        android:textSize="20sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout android:layout_marginLeft="10dp"
-                android:paddingLeft="10dp"
-                >
-                <TextView
-                    android:textColor="#7F7F7F"
-                    android:text="状态"
-                    android:textSize="20sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </TableLayout>
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:textColor="#7F7F7F"
+            android:text="状态"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/third_tv"
+            android:paddingRight="5dp"
+            android:paddingLeft="15dp"/>
+    </RelativeLayout>
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"

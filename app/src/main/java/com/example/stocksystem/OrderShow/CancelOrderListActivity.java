@@ -3,6 +3,7 @@ package com.example.stocksystem.OrderShow;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class CancelOrderListActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cancel_orders_list);
+        initInfo();
 
         tv_username = findViewById(R.id.cancel_order_list_tvUser);
         listView = findViewById(R.id.cancel_orderList_lv_ShowTotal);
@@ -253,5 +255,11 @@ public class CancelOrderListActivity extends AppCompatActivity {
 
     public void finishThis(View view) {
         finish();
+    }
+
+    private void initInfo(){
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        user_id = sp.getInt("userid", -1);
+        username = sp.getString("name", "null");
     }
 }
