@@ -43,6 +43,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+
+            <TextView
+                android:text="开盘"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/begin_price_id"
+                android:text="46.00"
+                android:textColor="@color/colorRed"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="4dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,31 +114,7 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
-                android:text="开盘"
-                android:paddingTop="16dp"
-                android:paddingBottom="4dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/begin_price_id"
-                android:text="46.00"
-                android:textColor="@color/colorRed"
-                android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="4dp"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -135,7 +140,6 @@
                 android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
 
         </LinearLayout>
 

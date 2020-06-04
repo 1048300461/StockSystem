@@ -66,21 +66,21 @@ public class StockDeatailActivity extends AppCompatActivity {
 
         String[] infos = StockDataUtil.parseStockInfo(stockInfo[0]);
         String[] correspondInfos = {
-                "名字", "今日开盘价", "昨日收盘价", "当前价格", "今日最高价", "今日最低价",
+                "今日开盘价", "昨日收盘价", "当前价格", "今日最高价", "今日最低价",
                 "竞买价", "竞卖价", "成交的股票数", "成交金额", "买一数", "买一价",
                 "买二数", "买二价", "买三数", "买三价", "买四数", "买四价", "买五数", "买五价",
                 "卖一数", "卖一价", "卖二数", "卖二价","卖三数", "卖三价","卖四数", "卖四价",
                 "卖五数", "卖五价", "日期", "时间"};
 
-        begin_price_tv.setText(infos[1]);
-        yesterday_price_tv.setText(infos[2]);
-        current_price_tv.setText(infos[3]);
-        high_price_tv.setText(infos[4]);
-        low_price_tv.setText(infos[5]);
+        begin_price_tv.setText(infos[0]);
+        yesterday_price_tv.setText(infos[1]);
+        current_price_tv.setText(infos[2]);
+        high_price_tv.setText(infos[3]);
+        low_price_tv.setText(infos[4]);
         BigDecimal bd = new BigDecimal(Double.parseDouble(infos[8]) / 10000.0);
-        bd   =   bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+        bd =  bd.setScale(2,BigDecimal.ROUND_HALF_UP);
         deal_money_tv.setText(bd + "万");
-        deal_num_tv.setText(Double.parseDouble(infos[9]) / 100.0 + "百股");
+        deal_num_tv.setText(Double.parseDouble(infos[7]) / 100.0 + "百股");
         Log.d(TAG, "onCreate: " + infos[8]);
         Log.d(TAG, "onCreate: " + infos[9]);
         Log.d(TAG, "onCreate: " + Double.parseDouble(infos[9]) / 100.0 + "百");
