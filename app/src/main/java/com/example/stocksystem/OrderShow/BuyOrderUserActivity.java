@@ -25,9 +25,11 @@ import com.example.stocksystem.bean.Stock;
 import com.example.stocksystem.dao.OrderDao;
 import com.example.stocksystem.dao.OrdersListDao;
 import com.example.stocksystem.dao.StockDao;
+import com.example.stocksystem.dao.UserDao;
 import com.example.stocksystem.dao.impl.OrderDaoImpl;
 import com.example.stocksystem.dao.impl.OrdersListDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
+import com.example.stocksystem.dao.impl.UserDaoImpl;
 import com.example.stocksystem.util.StockDataUtil;
 
 import java.text.DecimalFormat;
@@ -50,6 +52,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Button btn_buy;    //买入
     //private AutoCompleteTextView autoTv_stock;    //显示股票名称和id
+    private double FreeMoney;//用户可用人民币数量
 
     private List<Order> showBuyOrderList = new ArrayList<>();
     private List<Order> showSellOrderList =  new ArrayList<>();
@@ -96,16 +99,21 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                             && spinner.getSelectedItemPosition()!=0
                     )
                     {
-                        BuyOrdersAcsncTask sellTask = new BuyOrdersAcsncTask();
-                        order.setUser_id(user_id);
-                        order.setStock_id(stockList.get((spinner.getSelectedItemPosition()-1)).getStock_id());
-                        order.setType(0);       //0为买入
-                        order.setPrice(Double.parseDouble(editText_price.getText().toString()));
-                        order.setUndealed(Integer.parseInt(editText_Count.getText().toString()));
-                        order.setDealed(0);
-                        order.setCanceled(0);
-                        order.setTemp(0);
-                        sellTask.execute();
+                        Double payMoney=(double)Integer.parseInt(editText_Count.getText().toString())*Double.parseDouble(editText_price.getText().toString());
+                        if(FreeMoney<payMoney){
+                            Toast.makeText(BuyOrderUserActivity.this,"您当前的可用资金不够！",Toast.LENGTH_SHORT).show();
+                        }else {
+                            BuyOrdersAcsncTask sellTask = new BuyOrdersAcsncTask();
+                            order.setUser_id(user_id);
+                            order.setStock_id(stockList.get((spinner.getSelectedItemPosition()-1)).getStock_id());
+                            order.setType(0);       //0为买入
+                            order.setPrice(Double.parseDouble(editText_price.getText().toString()));
+                            order.setUndealed(Integer.parseInt(editText_Count.getText().toString()));
+                            order.setDealed(0);
+                            order.setCanceled(0);
+                            order.setTemp(0);
+                            sellTask.execute();
+                        }
                     }else
                     {
                         Toast.makeText(BuyOrderUserActivity.this,"输入错误！",Toast.LENGTH_SHORT).show();
@@ -243,6 +251,12 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         }
     }
 
+    //根据用户名查询用户可用人民币数量
+    private void getFreeMoney(){
+        UserDao userDao = new UserDaoImpl();
+        FreeMoney=userDao.QueryFreeMoneyByUserName(username);
+    }
+
     //访问数据库--》向orders表中插入买订单
     private class BuyOrdersAcsncTask extends AsyncTask<String,Integer,String> {
 
@@ -291,7 +305,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
 
     }
 
-    //访问数据库--》得到股票编号和名称
+    //访问数据库--》得到股票编号和名称,查询用户可用人民币数量
     private class GetStockAcsncTask extends AsyncTask<String,Integer,String> {
 
         /**
@@ -315,6 +329,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(String... strings) {
+            getFreeMoney();//查询用户可用人民币数量
             StockDao stockDao = new StockDaoImpl();
             stockList= stockDao.queryAllStock();
             return null;
@@ -367,6 +382,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Integer... StrockId) {
+            getFreeMoney();
             final String[] stockInfo = {null};
             isLoadSuccess = false;
             int type = -1;
