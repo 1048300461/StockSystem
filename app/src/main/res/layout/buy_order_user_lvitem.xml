@@ -8,11 +8,10 @@
     <!--买卖编号-->
     <TextView
         android:id="@+id/buy_order_user_lvitem_TVNum"
-        android:text="买1"
-        android:textSize="15dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:text="买1"
+        android:textSize="15dp"></TextView>
     <!--买卖价格-->
     <TextView
         android:id="@+id/buy_order_user_lvitem_TVprice"

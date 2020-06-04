@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         user.setLogin_name(editText_username.getText().toString());
         user.setPasswd(editText_pwd.getText().toString());
         user.setType(Integer.parseInt(spinner.getSelectedItemId()+""));
+        user.setUser_id(loginOrSignInDao.findUserIdByName(editText_username.getText().toString()));
         Log.d("user=",user.toString());
         IsUser = loginOrSignInDao.IsUser(user);
         if (IsUser)
@@ -199,7 +200,11 @@ public class LoginActivity extends AppCompatActivity {
     //登录跳转Activity
     private void goMainActivity(){
         Intent intent = new Intent(LoginActivity.this, ChatMainPageActivity.class);
-        writeLogin();
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        int result = sp.getInt("userid", -1);
+        if(result == -1){
+            writeLogin();
+        }
         startActivity(intent);
         finish();
     }
@@ -216,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
      * @return
      */
     private boolean isLogin(){
-        SharedPreferences sp = getSharedPreferences("isLogin",MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
         boolean isLogin = sp.getBoolean("isLogin", false);
         return isLogin;
     }
@@ -225,9 +230,12 @@ public class LoginActivity extends AppCompatActivity {
      * 写入登入
      */
     private void writeLogin(){
-        SharedPreferences sp = getSharedPreferences("isLogin", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("isLogin", true);
+        editor.putInt("userid",user.getUser_id());
+        editor.putString("name",user.getLogin_name());
         editor.apply();
     }
+
 }

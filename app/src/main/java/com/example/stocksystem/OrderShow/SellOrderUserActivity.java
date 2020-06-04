@@ -1,6 +1,7 @@
 package com.example.stocksystem.OrderShow;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.stocksystem.dao.StockDao;
 import com.example.stocksystem.dao.impl.OrderDaoImpl;
 import com.example.stocksystem.dao.impl.OrdersListDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
+import com.example.stocksystem.util.StockDataUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -63,10 +65,13 @@ public class SellOrderUserActivity extends AppCompatActivity {
     private List<UserPosition> positionList;
     //选中的股票编号
     private int OnItemStockId = 0;
+    private boolean isLoadSuccess = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sell_order_user);
+        initInfo();
         //实例页面控件
         tv_username = findViewById(R.id.sell_order_user_tvUser);
         spinner = findViewById(R.id.sellOrder_spinner_type);
@@ -384,6 +389,7 @@ public class SellOrderUserActivity extends AppCompatActivity {
             initViewListView();
         }
     }
+
     //防止进程对话框出错（that was originally added here）
     @Override
     protected void onPause() {
@@ -398,5 +404,11 @@ public class SellOrderUserActivity extends AppCompatActivity {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    private void initInfo(){
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        user_id = sp.getInt("userid", -1);
+        username = sp.getString("name", "null");
     }
 }
