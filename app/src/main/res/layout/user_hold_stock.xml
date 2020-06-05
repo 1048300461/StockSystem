@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.stocksystem.OrderShow.UserHoldStockActivity">
+    <!--  标题栏  -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#C0C0C0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:background="@color/colorWhite"
+            android:layout_marginBottom="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:onClick="finishThis"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@mipmap/buttoncancel_logo_default"
+                android:background="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+            <TextView
+                android:id="@+id/title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="持股信息"
+                android:textSize="25sp"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:id="@+id/user_hold_stock_tvUser"
+                android:text="(未登录)"
+                android:textSize="20sp"
+                android:layout_toRightOf="@id/title_tv"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/user_hold_stock_IGrefresh"
+                android:src="@drawable/refresh_logo"
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/china"
+            android:layout_width="20dp"
+            android:layout_height="15dp" />
+        <TextView
+            android:textSize="15sp"
+            android:text="人民币账户         A股"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!--  账户信息  -->
+    <LinearLayout
+
+        android:background="#C0C0C0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--    第一行    -->
+            <LinearLayout
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--  总资产  -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="总资产"
+                            android:textSize="22sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <ImageView
+                            android:layout_marginLeft="5dp"
+                            android:id="@+id/user_hold_stock_ShowOrHide"
+                            android:src="@drawable/logo_pwd_show"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/user_hold_stock_tvCny_free"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:text="200000.00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!--  浮动盈亏  -->
+                <LinearLayout
+                    android:layout_marginLeft="30dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="浮动盈亏"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/user_hold_stock_tvAddSubCount"
+                        android:text="+301.00"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!--  当日参考盈亏  -->
+                <LinearLayout
+                    android:layout_marginLeft="30dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="当日参考盈亏"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/user_hold_stock_tvAddNow"
+                            android:text="+301.00"
+                            android:textSize="20sp"
+                            android:textColor="@color/colorRed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <TextView
+                            android:id="@+id/user_hold_stock_tvAddNowPre"
+                            android:layout_gravity="center"
+                            android:text="+0.37%"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="10dp"
+                            android:textColor="@color/colorRed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--    第二行    -->
+            <LinearLayout
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="1dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--  总市值  -->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:text="总市值"
+                            android:textSize="22sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/user_hold_stock_tvStockCount"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:text="200000.00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!--  可用资金  -->
+                <LinearLayout
+                    android:layout_marginLeft="30dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="可用资金"
+                        android:textSize="22sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/user_hold_stock_tvCanUseCny_free"
+                        android:text="301.00"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorBlack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout
+>
+
+    <!--  市值列表  -->
+    <LinearLayout
+        android:background="@color/colorWhite"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--    列表标题    -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:paddingLeft="5dp"
+                android:paddingRight="90dp"
+                android:textSize="20sp"
+                android:text="市值"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="盈亏"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="持仓"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="成本/现价"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!--  列表内容  -->
+        <ListView
+            android:id="@+id/user_hold_stock_listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
+    </LinearLayout>
+</LinearLayout>
