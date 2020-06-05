@@ -35,4 +35,11 @@ public interface UserDao {
      * @return user_id
      */
     int findOneUserByUserName(String username);
+
+    /**
+     * 通过用户查询该用户可用人民币数量
+     * @param username  用户名
+     * @return user_id
+     */
+    double QueryFreeMoneyByUserName(String username);
 }

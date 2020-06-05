@@ -50,4 +50,25 @@ public class UserDaoImpl implements UserDao {
         }
         return userId;
     }
+
+    @Override
+    public double QueryFreeMoneyByUserName(String username){
+        double free_money=0;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select * from users where login_name='"+username+"'";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next())
+            {
+                free_money = rs.getDouble("cny_free");
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  free_money;
+    }
 }
