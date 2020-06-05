@@ -7,6 +7,8 @@ import com.example.stocksystem.util.DataBaseUtil;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -27,7 +29,34 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findOneUser(int userId) {
-        return null;
+        User user = new User();
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select * from users where user_id='"+userId+"'";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next())
+            {
+               user.setUser_id(userId);
+               user.setLogin_name(rs.getString("login_name"));
+                //不能直接调用rs.getDate();这样只能获取yyyy-MM-dd
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+               Date date = formatter.parse(rs.getString("create_date"));
+               user.setCreate_date(date);
+               user.setName(rs.getString("name"));
+               user.setPasswd("");
+               user.setType(rs.getInt("type"));
+               user.setCny_free(rs.getDouble("cny_free"));
+               user.setCny_freezed(rs.getDouble("cny_freezed"));
+               user.setTemp(rs.getInt("temp"));
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override
