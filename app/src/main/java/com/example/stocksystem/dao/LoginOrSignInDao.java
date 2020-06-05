@@ -38,5 +38,7 @@ public interface LoginOrSignInDao {
      */
     public int countUser();
 
+    int findUserIdByName(String name);
+
 
 }

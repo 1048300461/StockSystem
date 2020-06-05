@@ -113,4 +113,25 @@ public class LoginOrSignInDaoImpl implements LoginOrSignInDao {
         }
         return count;
     }
+
+    @Override
+    public int findUserIdByName(String name) {
+        int id = 0;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select * from users where login_name='"+name+"';";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next())
+            {
+                id = rs.getInt("user_id");
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return id;
+    }
 }

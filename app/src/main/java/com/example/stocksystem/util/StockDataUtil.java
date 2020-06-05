@@ -134,11 +134,6 @@ public class StockDataUtil {
 
         String stockInfo = getLatestInfo("sh601006");
         String[] parseStockInfoReuslt = parseStockInfo(stockInfo);
-//        String bigpanInfo = getBigPan("sh", 601006);
-//        String[] parseBigPanResult = parseBigPan(bigpanInfo);
-//
-//        for(int i = 0; i < parseBigPanResult.length; i++)
-//            System.out.println(parseBigPanResult[i]);
 
         for(int i = 0; i < parseStockInfoReuslt.length; i++)
             System.out.println(parseStockInfoReuslt[i]);

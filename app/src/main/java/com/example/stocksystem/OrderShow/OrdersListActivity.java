@@ -2,6 +2,7 @@ package com.example.stocksystem.OrderShow;
 
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 public class OrdersListActivity extends AppCompatActivity {
     public static String username = "wang";    //用户名--->admin为管理员
+    public int user_id;
 
     private OrdersList_ListView_Adapter lvAdapter;//listView的自定义配置器
     private List<Order> orderList;  //数据库中数据
@@ -41,6 +43,8 @@ public class OrdersListActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.orders_list);
+
+        initInfo();
 
         tv_username = findViewById(R.id.ordersList_textView_userName);
         listView = findViewById(R.id.orderList_listView_ShowTotal);
@@ -147,5 +151,11 @@ public class OrdersListActivity extends AppCompatActivity {
 
     public void finishThis(View view) {
         finish();
+    }
+
+    private void initInfo(){
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        user_id = sp.getInt("userid", 1000001);
+        username = sp.getString("name", "null");
     }
 }
