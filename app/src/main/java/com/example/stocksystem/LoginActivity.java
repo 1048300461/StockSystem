@@ -1,11 +1,22 @@
 package com.example.stocksystem;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        requestPermission();
         boolean isLogin = isLogin();
         if(isLogin){
             goMainActivity();
@@ -238,4 +250,48 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    //申请权限
+    //麦克风
+    private static final int GET_RECODE_AUDIO = 1;
+    private static String[] PERMISSION_AUDIO = {
+            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION
+            //在此处输入扩展需要申请的权限
+    };
+
+    private void requestPermission() {
+        // 当API大于 23 时，才动态申请权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(LoginActivity.this,PERMISSION_AUDIO,GET_RECODE_AUDIO);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case GET_RECODE_AUDIO:
+                //权限请求失败
+                if (grantResults.length == PERMISSION_AUDIO.length) {
+                    for (int result : grantResults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            //弹出对话框引导用户去设置
+                            goToAppSetting();
+                            Toast.makeText(LoginActivity.this, "请求权限被拒绝", Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                    }
+                }else{
+                    Toast.makeText(LoginActivity.this, "已授权", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+        }
+    }
+    private void goToAppSetting(){
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
 }
