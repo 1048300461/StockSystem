@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,11 +28,22 @@ import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
 import com.example.stocksystem.OrderShow.CancelOrderListActivity;
 import com.example.stocksystem.OrderShow.OrdersListActivity;
 import com.example.stocksystem.OrderShow.SellOrderUserActivity;
+import com.example.stocksystem.OrderShow.UserHoldStockActivity;
+import com.example.stocksystem.OrderShow.UserHoldStock_ListView_Adapter;
 import com.example.stocksystem.R;
 import com.example.stocksystem.StockDeatailActivity;
 import com.example.stocksystem.TestVoiceActivity;
+import com.example.stocksystem.bean.Order;
 import com.example.stocksystem.bean.Stock;
+import com.example.stocksystem.bean.Transaction;
+import com.example.stocksystem.bean.User;
+import com.example.stocksystem.dao.StockDao;
+import com.example.stocksystem.dao.TransactionDao;
+import com.example.stocksystem.dao.UserDao;
+import com.example.stocksystem.dao.impl.QueryOrdersTransDaoImpl;
 import com.example.stocksystem.dao.impl.StockDaoImpl;
+import com.example.stocksystem.dao.impl.TransactionDaoImpl;
+import com.example.stocksystem.dao.impl.UserDaoImpl;
 import com.example.stocksystem.util.StockDataUtil;
 import com.google.gson.Gson;
 import com.iflytek.cloud.RecognizerResult;
@@ -54,20 +67,27 @@ public class ChatMainPageActivity extends AppCompatActivity {
     boolean flag=false;//记录是否在待跳转状态
     int index=0;//记录跳向哪个界面
     int times = 0;
+    private ProgressDialog progressDialog;
     private Resources resources;
-    private String[] operations = new String[]{"购买股票", "卖出股票", "查询股票", "查询持股信息", "查询历史订单", "取消交易"};
+    private String[] operations = new String[]{"购买股票", "抛售股票", "查询股票信息", "查询财务信息", "查询成交订单",
+                        "查看交易中订单", "查询股票名称", "查询股票代码"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
             "\n"+"1. 购买股票 股票代码(股票名称)"+
-            "\n"+"2. 卖出股票"+
-            "\n"+"3. 查询股票 股票代码(股票名称)"+
-            "\n"+"4. 查询持股信息"+
-            "\n"+"5. 查询历史订单" +
-            "\n"+"6. 取消交易");
+            "\n"+"2. 抛售股票"+
+            "\n"+"3. 查询股票信息 股票代码(股票名称)"+
+            "\n"+"4. 查询财务信息"+
+            "\n"+"5. 查询成交订单" +
+            "\n"+"6. 查看交易中订单"+
+            "\n"+"7. 查询股票名称 股票代码"+
+            "\n"+"8. 查询股票代码 股票名称");
     private MsgAdapter msgAdapter;
     private boolean isLoadSuccess = false;
+    private String searchInfo = "";
+    private String searchResult = "";
 
     private static final String TAG = "ChatMainPageActivity";
+    private MsgEntity rcv_msg = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +149,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
                     //模拟接受消息
                     MsgEntity rcv_msg=null;
                     int code = getActivityCode(content);
-                    Log.d(TAG, "onClick: " + code);
+
                     if(code != -1){
                         String showContent = operations[code];
                         content = content.replace(showContent, "");
@@ -156,18 +176,97 @@ public class ChatMainPageActivity extends AppCompatActivity {
                                     showDialog(showContent, code, codeInfo);
                                 }
                             }
+                        }else if(code == 6 || code == 7){
+                            searchInfo = content;
+                            if(searchInfo.length() < 2){
+                                rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股提醒您：请附加要查询的内容！");
+                                reciveMsg(rcv_msg, msgAdapter);
+                            }else{
+                                GetSQLAcsncTask getSQLAcsncTask = new GetSQLAcsncTask();
+                                getSQLAcsncTask.execute();
+                            }
+
                         }else{
                             showDialog(showContent, code, "");
                         }
 
                     }else{
-                        rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股不明白您的需求呢");
+                        rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股不懂您的需求呢！");
                         reciveMsg(rcv_msg, msgAdapter);
                     }
                 }
                 edt_msg.setText("");
             }
         });
+    }
+
+    //访问数据库---》得到信息
+    private class GetSQLAcsncTask extends AsyncTask<String,Integer,String> {
+
+        /**
+         * onPreExecute方法用于执行后台任务前的UI操作
+         */
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ChatMainPageActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
+            progressDialog.setTitle("提示");
+            progressDialog.setMessage("小股查询数据中。。。");
+            progressDialog.setIndeterminate(true);  //设置ProgressDialog 的进度条是否不明确
+            progressDialog.setCancelable(false); //设置ProgressDialog 是否可以按退回按键取消
+            progressDialog.show();
+        }
+
+        /**
+         * doInBackground方法内部执行后台任务，不可在此方法中更新主UI
+         * @param strings
+         * @return
+         */
+        @Override
+        protected String doInBackground(String... strings) {
+
+            StockDao stockDao = new StockDaoImpl();
+            Stock stock;
+
+            try{
+                int codeId = Integer.parseInt(searchInfo);
+                stock = stockDao.findStockById(codeId);
+                if(stock == null){
+                    rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股提醒您：查询失败。\n失败原因：不存在该股票代码。");
+                }else{
+                    searchResult = stock.getName();
+                    rcv_msg = new MsgEntity(MsgEntity.RCV_MSG, "小股提醒您：\n股票代码" +
+                            searchInfo + "\n对应的股票名称为：" + searchResult);
+                }
+
+
+            }catch (Exception e){
+                stock = stockDao.findStockByName(searchInfo);
+                if(stock != null){
+                    searchResult = stock.getStock_id() + "";
+                    rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股提醒您：\n股票名称" +
+                            searchInfo +"\n对应的股票代码为：" + searchResult);
+                }else{
+                    rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股提醒您：查询失败。\n失败原因：不存在该股票名称。");
+                }
+
+            }
+
+
+            Log.d(TAG, "doInBackground: " + searchResult);
+            return null;
+        }
+        /**
+         * onPostExecute方法用于在执行完后更新UI，显示结果
+         * @param s
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.cancel();
+
+            reciveMsg(rcv_msg, msgAdapter);
+            super.onPostExecute(s);
+        }
     }
 
     private void reciveMsg( MsgEntity rcv_msg,MsgAdapter msgAdapter){
@@ -289,7 +388,9 @@ public class ChatMainPageActivity extends AppCompatActivity {
                         intent2.putExtras(bundle2);
                         startActivity(intent2);
                         break;
-                    case 3://查询股票
+                    case 3://查询持股信息
+                        Intent intent3 = new Intent(ChatMainPageActivity.this, UserHoldStockActivity.class);
+                        startActivity(intent3);
                         break;
                     case 4://查看历史交易订单
                         Intent intent4 = new Intent(ChatMainPageActivity.this, OrdersListActivity.class);

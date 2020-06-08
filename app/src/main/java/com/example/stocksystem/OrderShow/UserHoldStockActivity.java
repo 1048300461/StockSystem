@@ -1,6 +1,7 @@
 package com.example.stocksystem.OrderShow;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -67,6 +68,9 @@ public class UserHoldStockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_hold_stock);
+
+        //初始化用户信息
+        initInfo();
 
         tv_user = findViewById(R.id.user_hold_stock_tvUser);
         listView = findViewById(R.id.user_hold_stock_listView);
@@ -251,5 +255,11 @@ public class UserHoldStockActivity extends AppCompatActivity {
 
     public void finishThis(View view) {
         finish();
+    }
+
+    private void initInfo(){
+        SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
+        user_id = sp.getInt("userid", -1);
+        username = sp.getString("name", "null");
     }
 }

@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <Button
+                android:visibility="invisible"
                 android:onClick="finishThis"
                 android:layout_marginLeft="10dp"
                 android:drawableLeft="@mipmap/buttoncancel_logo_default"
@@ -121,10 +122,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+            </LinearLayout>
 
+            <!--    第一行    -->
+            <LinearLayout
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <!--  浮动盈亏  -->
                 <LinearLayout
-                    android:layout_marginLeft="30dp"
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -237,8 +247,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout
->
+    </LinearLayout>
 
     <!--  市值列表  -->
     <LinearLayout
@@ -255,16 +264,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:paddingLeft="5dp"
-                android:paddingRight="90dp"
+                android:paddingLeft="1dp"
                 android:textSize="20sp"
                 android:text="市值"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:text="盈亏"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

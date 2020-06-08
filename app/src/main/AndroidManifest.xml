@@ -22,6 +22,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -30,12 +31,16 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        
+        <activity android:name=".StockDeatailActivity"/>
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ChatMainPage.ChatMainPageActivity"/>
         <activity android:name=".OrderShow.BuyOrderUserActivity"/>
         <activity android:name=".OrderShow.SellOrderUserActivity"/>
+        <activity android:name=".OrderShow.OrdersListActivity"/>
+        <activity android:name=".OrderShow.CancelOrderListActivity"/>
+        <activity android:name=".OrderShow.UserHoldStockActivity"/>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,5 +48,5 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
+
