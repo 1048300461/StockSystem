@@ -66,6 +66,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
 
     String codeInfo;
     private boolean isLoadSuccess = false;
+    private String stockInfo = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +75,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         initInfo();
         Bundle bundle = this.getIntent().getExtras();
         codeInfo = bundle.getString("codeInfo");
+        Log.d(TAG, "onCreate: " + codeInfo);
 
         //实例页面控件
         tv_username = findViewById(R.id.buy_order_user_tvUser);
@@ -101,7 +103,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                     {
                         Double payMoney=(double)Integer.parseInt(editText_Count.getText().toString())*Double.parseDouble(editText_price.getText().toString());
                         if(FreeMoney<payMoney){
-                            Toast.makeText(BuyOrderUserActivity.this,"您当前的可用资金不够！",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BuyOrderUserActivity.this,"超出可用资金: " + FreeMoney,Toast.LENGTH_SHORT).show();
                         }else {
                             BuyOrdersAcsncTask sellTask = new BuyOrdersAcsncTask();
                             order.setUser_id(user_id);
@@ -332,6 +334,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
             getFreeMoney();//查询用户可用人民币数量
             StockDao stockDao = new StockDaoImpl();
             stockList= stockDao.queryAllStock();
+            Log.d(TAG, "doInBackground: " + FreeMoney);
             return null;
         }
         /**
@@ -383,7 +386,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Integer... StrockId) {
             getFreeMoney();
-            final String[] stockInfo = {null};
+
             isLoadSuccess = false;
             int type = -1;
             String code = OnItemStockId + "";
@@ -401,20 +404,17 @@ public class BuyOrderUserActivity extends AppCompatActivity {
             }
 
             final String finalCode = code;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    stockInfo[0] = StockDataUtil.getLatestInfo(finalCode);
-                    isLoadSuccess = true;
-                }
-            }).start();
+            stockInfo = StockDataUtil.getLatestInfo(finalCode);
 
-            //等待数据加载完毕
-            while (!isLoadSuccess){ }
-            isLoadSuccess = false;
-
-
-            String[] infos = StockDataUtil.parseStockInfo(stockInfo[0]);
+            return null;
+        }
+        /**
+         * onPostExecute方法用于在执行完后更新UI，显示结果
+         * @param s
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            String[] infos = StockDataUtil.parseStockInfo(stockInfo);
             showSellOrderList.clear();
             showBuyOrderList.clear();
             for(int i = 9; i < 19; i = i + 2){
@@ -434,43 +434,10 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                 Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
                 showSellOrderList.add(order);
             }
-//            OrdersListDao listDao = new OrdersListDaoImpl();
-//            List<Order> sqlBuyOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,0);//买入
-//            List<Order> sqlSellOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,1);//卖出
-//            //买入
-//            //查询出的结果后五项为最新的
-//            if (sqlBuyOrders.size()<5)
-//            {
-//                showBuyOrderList = sqlBuyOrders;
-//            }else
-//            {
-//                for (int i=1;i<6;i++)
-//                {
-//                    showBuyOrderList.add(sqlBuyOrders.get(sqlBuyOrders.size()-i));
-//                }
-//            }
-//            //卖出
-//            if (sqlSellOrders.size()<5)
-//            {
-//                showSellOrderList = sqlSellOrders;
-//            }else
-//            {
-//                for (int i=1;i<6;i++)
-//                {
-//                    showSellOrderList.add(sqlSellOrders.get(sqlSellOrders.size()-i));
-//                }
-//            }
-            return null;
-        }
-        /**
-         * onPostExecute方法用于在执行完后更新UI，显示结果
-         * @param s
-         */
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
             progressDialog.cancel();
             initViewListView();
+            super.onPostExecute(s);
+
         }
     }
 
