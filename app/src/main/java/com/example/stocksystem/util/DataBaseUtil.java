@@ -25,10 +25,15 @@ public class DataBaseUtil {
      * @param db 数据库名
      * @return connection对象
      */
-    private static String IP="192.168.1.112";
+//    private static String IP="192.168.1.112";
+//    private static String USER="sa";
+//    private static String PASSWORD="123456";
+//    private static String DB="dbo";
+
+    private static String IP="192.168.73.128";
     private static String USER="sa";
-    private static String PASSWORD="123456";
-    private static String DB="dbo";
+    private static String PASSWORD="Zc19981221";
+    private static String DB="gp";
     
     public static Connection getSQLConnection()
     {
