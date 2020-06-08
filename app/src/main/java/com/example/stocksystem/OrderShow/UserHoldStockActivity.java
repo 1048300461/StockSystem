@@ -52,6 +52,7 @@ public class UserHoldStockActivity extends AppCompatActivity {
     private double moneyCount;  //总资产
     private double stockMoneyCount;     //总市值
     private double addSubCount;     //总营收
+    private double canUserMoney;    //可用资金
 
     public static String username = "未登录";
     public static int user_id = 10000001;
@@ -143,7 +144,7 @@ public class UserHoldStockActivity extends AppCompatActivity {
         tv_AddNow.setText(df.format(addSubCount));
         tv_AddNowPre.setText(df.format(addSubCount/stockMoneyCount * 100)+"%");
         tv_StockCount.setText(df.format(stockMoneyCount));
-        tv_CanUseCny_free.setText(df.format(moneyCount - stockMoneyCount));
+        tv_CanUseCny_free.setText(df.format(canUserMoney));
         tv_user.setText("("+username+")");
     }
 
@@ -223,6 +224,8 @@ public class UserHoldStockActivity extends AppCompatActivity {
             UserDao userDao = new UserDaoImpl();
             User user = new User();
             user = userDao.findOneUser(user_id);
+            //可用资金
+            canUserMoney = user.getCny_free();
             //设置总资产 = 可用的 + 冻结 + 总市值
             moneyCount = user.getCny_free() + user.getCny_freezed() + stockMoneyCount;
             return null;
@@ -241,6 +244,7 @@ public class UserHoldStockActivity extends AppCompatActivity {
             moneyCount = 0;
             stockMoneyCount = 0;
             addSubCount = 0;
+            canUserMoney = 0;
             super.onPostExecute(s);
         }
     }
