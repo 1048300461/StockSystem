@@ -15,7 +15,55 @@
         android:orientation="vertical"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="股票名称: "
+                android:textSize="16sp"
+                android:paddingTop="16dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/stockname_tv"
+                android:text="51.00"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:paddingTop="16dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
+            <TextView
+                android:text="昨日收盘"
+                android:textSize="16sp"
+                android:paddingTop="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/yesterday_price_tv"
+                android:text="51.00"
+                android:textStyle="bold"
+                android:textColor="@color/colorRed"
+                android:paddingTop="16dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,33 +162,6 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:text="昨日收盘"
-                android:textSize="16sp"
-                android:paddingTop="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/yesterday_price_tv"
-                android:text="51.00"
-                android:textStyle="bold"
-                android:textColor="@color/colorRed"
-                android:paddingTop="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="8dp"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
         <LinearLayout
