@@ -73,7 +73,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Resources resources;
     private String[] operations = new String[]{"购买股票", "抛售股票", "查询股票信息", "查询财务信息", "查询成交订单",
-                        "查看交易中订单", "查询股票名称", "查询股票代码", "随机股票名称", "退出登录"};
+                        "查看委托中订单", "查询股票名称", "查询股票代码", "随机股票名称", "退出登录"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
             "\n"+"1. 购买股票 股票代码(股票名称)"+
@@ -81,7 +81,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
             "\n"+"3. 查询股票信息 股票代码(股票名称)"+
             "\n"+"4. 查询财务信息"+
             "\n"+"5. 查询成交订单" +
-            "\n"+"6. 查看交易中订单"+
+            "\n"+"6. 查看委托中订单"+
             "\n"+"7. 查询股票名称 股票代码"+
             "\n"+"8. 查询股票代码 股票名称" +
             "\n"+"9. 随机股票名称" +
@@ -94,6 +94,12 @@ public class ChatMainPageActivity extends AppCompatActivity {
     private static final String TAG = "ChatMainPageActivity";
     private MsgEntity rcv_msg = null;
     private List<Stock> stockList;
+    private String codeInfo = "";
+    private String content = "";
+    private String code = "";
+    private String showContent;
+    private int codeInt;
+    private String stockName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +153,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                String content = edt_msg.getText().toString().trim();
+                content = edt_msg.getText().toString().trim();
                 if(!TextUtils.isEmpty(content)){
                     MsgEntity send_msg=new MsgEntity(MsgEntity.SEND_MSG,content);
                     list.add(send_msg);
@@ -156,35 +162,23 @@ public class ChatMainPageActivity extends AppCompatActivity {
 
                     //模拟接受消息
                     MsgEntity rcv_msg=null;
-                    int code = getActivityCode(content);
+                    codeInt = getActivityCode(content);
 
-                    if(code != -1){
-                        String showContent = operations[code];
+                    if(codeInt != -1){
+                        showContent = operations[codeInt];
                         content = content.replace(showContent, "");
                         content = content.replace(" ", "");
-                        String codeInfo = "";
-                        if(code == 0 || code == 2){
+                        codeInfo = "";
+                        if(codeInt == 0 || codeInt == 2){
                             if(content.length() == 0){
                                 rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"您未说明股票名称/股票代码哦。");
                                 reciveMsg(rcv_msg, msgAdapter);
                             }else{
-                                try{
-                                    //判断用户输入的是股票代码还是名称
-                                    Log.d(TAG, "onClick: " + content);
-                                    int stockId = Integer.parseInt(content);
-                                    codeInfo = getCorrespondStock(stockId);
-                                }catch (Exception e){
-                                    Log.d(TAG, "onClick: " + content);
-                                    codeInfo = getCorrespondStock(content);
-                                }
-                                if(codeInfo.length() == 0){
-                                    rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股没有查到该股票哦。");
-                                    reciveMsg(rcv_msg, msgAdapter);
-                                }else{
-                                    showDialog(showContent, code, codeInfo);
-                                }
+
+                                GetStockInfoAcsncTask getStockInfoAcsncTask = new GetStockInfoAcsncTask();
+                                getStockInfoAcsncTask.execute();
                             }
-                        }else if(code == 6 || code == 7){
+                        }else if(codeInt == 6 || codeInt == 7){
                             searchInfo = content;
                             if(searchInfo.length() < 2){
                                 rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股提醒您：请附加要查询的内容！");
@@ -194,14 +188,14 @@ public class ChatMainPageActivity extends AppCompatActivity {
                                 getSQLAcsncTask.execute();
                             }
 
-                        }else if(code == 9){
+                        }else if(codeInt == 9){
                             //退出登录
                             logout();
-                        }else if(code == 8){
+                        }else if(codeInt == 8){
                             //查看热门股票
                             findHotStock();
                         }else{
-                            showDialog(showContent, code, "");
+                            showDialog(showContent, codeInt, "");
                         }
 
                     }else{
@@ -507,7 +501,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
                         break;
                     case 2:////查询股票
                         Bundle bundle2 = new Bundle();
-                        bundle2.putString("codeInfo", args);
+                        bundle2.putString("stockID", args);
                         Intent intent2 = new Intent(ChatMainPageActivity.this, StockDeatailActivity.class);
                         intent2.putExtras(bundle2);
                         startActivity(intent2);
@@ -556,73 +550,93 @@ public class ChatMainPageActivity extends AppCompatActivity {
         return -1;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String getCorrespondStock(final String stockName){
-        String code = "";
-        final Stock[] stock = {null};
+    //访问数据库--》得到股票编号和名称,查询用户可用人民币数量
+    private class GetStockInfoAcsncTask extends AsyncTask<String,Integer,String> {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                stock[0] = new StockDaoImpl().findStockByName(stockName);
-                isLoadSuccess = true;
+        /**
+         * onPreExecute方法用于执行后台任务前的UI操作
+         */
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ChatMainPageActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
+            progressDialog.setTitle("提示");
+            progressDialog.setMessage("小股查询数据中。。。");
+            progressDialog.setIndeterminate(true);  //设置ProgressDialog 的进度条是否不明确
+            progressDialog.setCancelable(false); //设置ProgressDialog 是否可以按退回按键取消
+            progressDialog.show();
+        }
+
+        /**
+         * doInBackground方法内部执行后台任务，不可在此方法中更新主UI
+         * @param strings
+         * @return
+         */
+        @Override
+        protected String doInBackground(String... strings) {
+            code = "";
+            Stock stock;
+            try{
+                int stockId = Integer.parseInt(content);
+                stock = new StockDaoImpl().findStockById(stockId);
+
+                if(stock != null){
+                    code = stockId + "";
+                    int length = 6 - code.length();
+                    String temp = "";
+                    for(int i = 0; i < length; i++){
+                        temp += "0";
+                    }
+                    code = temp + code;
+                    if(stock.getType() == 0){
+                        code = "sh" + code;
+                    }else{
+                        code = "sz" + code;
+                    }
+                }else{
+                    codeInfo = "";
+                }
+            }catch (Exception e){
+                Log.d(TAG, "onClick: " + content);
+                stock = new StockDaoImpl().findStockByName(content);
+                if(stock != null){
+                    code = stock.getStock_id() + "";
+                    int length = 6 - code.length();
+                    String temp = "";
+                    for(int i = 0; i < length; i++){
+                        temp += "0";
+                    }
+                    code = temp + code;
+
+                    if(stock.getType() == 0){
+                        code = "sh" + code;
+                    }else{
+                        code = "sz" + code;
+                    }
+                }else{
+                    codeInfo = "";
+                }
             }
-        }).start();
+            return null;
+        }
+        /**
+         * onPostExecute方法用于在执行完后更新UI，显示结果
+         * @param s
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.cancel();
+            codeInfo = code;
 
-        while (!isLoadSuccess){ }
-        isLoadSuccess = false;
-
-        if(stock[0] != null){
-            code = stock[0].getStock_id() + "";
-            int length = 6 - code.length();
-            String temp = "";
-            for(int i = 0; i < length; i++){
-                temp += "0";
-            }
-            code = temp + code;
-
-            if(stock[0].getType() == 0){
-                code = "sh" + code;
+            if(codeInfo.length() == 0){
+                rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,"小股没有查到该股票哦。");
+                reciveMsg(rcv_msg, msgAdapter);
             }else{
-                code = "sz" + code;
+                showDialog(showContent, codeInt, codeInfo);
             }
         }
 
-        return code;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String getCorrespondStock(final int stockId){
-        String code = "";
-        final Stock[] stock = {null};
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                stock[0] = new StockDaoImpl().findStockById(stockId);
-                isLoadSuccess = true;
-            }
-        }).start();
-
-        while (!isLoadSuccess){ }
-        isLoadSuccess = false;
-
-        if(stock[0] != null){
-            code = stockId + "";
-            int length = 6 - code.length();
-            String temp = "";
-            for(int i = 0; i < length; i++){
-                temp += "0";
-            }
-            code = temp + code;
-            if(stock[0].getType() == 0){
-                code = "sh" + code;
-            }else{
-                code = "sz" + code;
-            }
-        }
-
-        return code;
     }
 
     @Override

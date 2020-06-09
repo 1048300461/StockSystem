@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
 import com.example.stocksystem.OrderShow.buyOrder_User_ListView_Adapter;
 import com.example.stocksystem.bean.Order;
+import com.example.stocksystem.dao.impl.StockDaoImpl;
 import com.example.stocksystem.util.StockDataUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -32,7 +33,7 @@ public class StockDeatailActivity extends AppCompatActivity {
 
     private ImageView time_img, day_img, week_img, month_img;
     private TextView current_price_tv, high_price_tv, low_price_tv, begin_price_tv,
-                    yesterday_price_tv, deal_num_tv, deal_money_tv;
+                    yesterday_price_tv, deal_num_tv, deal_money_tv, stockname_tv;
 
     private static final String TAG = "StockDeatailActivity";
 
@@ -45,13 +46,16 @@ public class StockDeatailActivity extends AppCompatActivity {
     private ListView listView_buy ;
     private ListView listView_sell;
 
+    private String stockName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_deatail);
 
         Bundle bundle = this.getIntent().getExtras();
-        codeInfo = bundle.getString("codeInfo");
+        codeInfo = bundle.getString("stockID");
+        Log.d(TAG, "onCreate: " + codeInfo);
 
         time_img = findViewById(R.id.time_img);
         day_img = findViewById(R.id.day_img);
@@ -68,6 +72,7 @@ public class StockDeatailActivity extends AppCompatActivity {
         yesterday_price_tv = findViewById(R.id.yesterday_price_tv);
         deal_money_tv = findViewById(R.id.deal_money_tv);
         deal_num_tv = findViewById(R.id.deal_num_tv);
+        stockname_tv = findViewById(R.id.stockname_tv);
 
         String[] urls = StockDataUtil.getGraphUrl(codeInfo);
         Glide.with(this).asBitmap().load(urls[0]).into(time_img);
@@ -107,9 +112,10 @@ public class StockDeatailActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Integer... StrockId) {
-
+            stockName = new StockDaoImpl().findStockById(Integer.parseInt(codeInfo.substring(2))).getName();
+            Log.d(TAG, "doInBackground: " + stockName);
             codeInfo = StockDataUtil.getLatestInfo(codeInfo);
-            Log.d(TAG, "doInBackground: " + codeInfo);
+
             return null;
         }
         /**
@@ -152,11 +158,12 @@ public class StockDeatailActivity extends AppCompatActivity {
                 deal_money_tv.setText(bd + "万");
                 deal_num_tv.setText(Double.parseDouble(infos[7]) / 100.0 + "百股");
             }
-
-            progressDialog.cancel();
+            stockname_tv.setText(stockName);
             initViewListView();
+            progressDialog.cancel();
             super.onPostExecute(s);
 
+            Log.d(TAG, "onPostExecute: " + stockName);
         }
     }
 
