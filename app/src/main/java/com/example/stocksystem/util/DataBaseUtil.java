@@ -25,15 +25,16 @@ public class DataBaseUtil {
      * @param db 数据库名
      * @return connection对象
      */
-//    private static String IP="192.168.1.112";
-//    private static String USER="sa";
-//    private static String PASSWORD="123456";
-//    private static String DB="dbo";
+       private static String IP="103.46.128.45";
+   private static String USER="sa";
+    private static String PASSWORD="123456";
+   private static String DB="dbo";
+   private static String PORT = "58026";
 
-    private static String IP="192.168.73.128";
-    private static String USER="sa";
-    private static String PASSWORD="Zc19981221";
-    private static String DB="gp";
+    //private static String IP="192.168.73.128";
+    //private static String USER="sa";
+    //private static String PASSWORD="Zc19981221";
+    //private static String DB="gp";
     
     public static Connection getSQLConnection()
     {
@@ -42,7 +43,7 @@ public class DataBaseUtil {
         try
         {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-              con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":1433/" + DB + ";useunicode=true;characterEncoding=UTF-8", USER, PASSWORD);
+              con = DriverManager.getConnection("jdbc:jtds:sqlserver://" + IP + ":"+PORT+"/" + DB + ";useunicode=true;characterEncoding=UTF-8", USER, PASSWORD);
         } catch (ClassNotFoundException e)
         {
             e.printStackTrace();
