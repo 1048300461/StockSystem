@@ -68,6 +68,11 @@ public class StockDataUtil {
                 "卖一数", "卖一价", "卖二数", "卖二价","卖三数", "卖三价","卖四数", "卖四价",
                 "卖五数", "卖五价", "日期", "时间"};
         String[] parseResult = new String[correspondInfos.length - 1];
+        if(correspondInfos.length <= 1){
+            return null;
+        }
+        Log.d(TAG, "parseStockInfo: " + correspondInfos.length);
+
         for (int i = 1; i < correspondInfos.length; i++){
             //跳过第一个，第一个为股票名字，已经有了
             //parseResult[i - 1] = correspondInfos[i] + ": " + infos[i];
@@ -134,7 +139,6 @@ public class StockDataUtil {
 
         String stockInfo = getLatestInfo("sh601006");
         String[] parseStockInfoReuslt = parseStockInfo(stockInfo);
-
         for(int i = 0; i < parseStockInfoReuslt.length; i++)
             System.out.println(parseStockInfoReuslt[i]);
     }

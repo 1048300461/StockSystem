@@ -148,36 +148,39 @@ public class StockDeatailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             String[] infos = StockDataUtil.parseStockInfo(codeInfo);
+
             showSellOrderList.clear();
             showBuyOrderList.clear();
 
-            for(int i = 9; i < 19; i = i + 2){
-                Order order = new Order();
-                order.setDealed(Integer.parseInt(infos[i]));
-                order.setPrice(Double.parseDouble(infos[i+1]));
-                order.setType(0);
-                Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
-                showBuyOrderList.add(order);
-            }
+            if(infos != null){
+                for(int i = 9; i < 19; i = i + 2){
+                    Order order = new Order();
+                    order.setDealed(Integer.parseInt(infos[i]));
+                    order.setPrice(Double.parseDouble(infos[i+1]));
+                    order.setType(0);
+                    Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                    showBuyOrderList.add(order);
+                }
 
-            for(int i = 19; i < 29; i = i + 2){
-                Order order = new Order();
-                order.setDealed(Integer.parseInt(infos[i]));
-                order.setPrice(Double.parseDouble(infos[i+1]));
-                order.setType(1);
-                Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
-                showSellOrderList.add(order);
-            }
-            begin_price_tv.setText(infos[0]);
-            yesterday_price_tv.setText(infos[1]);
-            current_price_tv.setText(infos[2]);
-            high_price_tv.setText(infos[3]);
-            low_price_tv.setText(infos[4]);
+                for(int i = 19; i < 29; i = i + 2){
+                    Order order = new Order();
+                    order.setDealed(Integer.parseInt(infos[i]));
+                    order.setPrice(Double.parseDouble(infos[i+1]));
+                    order.setType(1);
+                    Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                    showSellOrderList.add(order);
+                }
+                begin_price_tv.setText(infos[0]);
+                yesterday_price_tv.setText(infos[1]);
+                current_price_tv.setText(infos[2]);
+                high_price_tv.setText(infos[3]);
+                low_price_tv.setText(infos[4]);
 
-            BigDecimal bd = new BigDecimal(Double.parseDouble(infos[8]) / 10000.0);
-            bd =  bd.setScale(2,BigDecimal.ROUND_HALF_UP);
-            deal_money_tv.setText(bd + "万");
-            deal_num_tv.setText(Double.parseDouble(infos[7]) / 100.0 + "百股");
+                BigDecimal bd = new BigDecimal(Double.parseDouble(infos[8]) / 10000.0);
+                bd =  bd.setScale(2,BigDecimal.ROUND_HALF_UP);
+                deal_money_tv.setText(bd + "万");
+                deal_num_tv.setText(Double.parseDouble(infos[7]) / 100.0 + "百股");
+            }
 
             progressDialog.cancel();
             initViewListView();

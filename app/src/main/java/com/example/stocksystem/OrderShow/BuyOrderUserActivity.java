@@ -396,7 +396,11 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                 }
             }
             int length = 6 - code.length();
-            code = String.join("", Collections.nCopies(length,"0")) + code;
+            String temp = "";
+            for(int i = 0; i < length; i++){
+                temp += "0";
+            }
+            code = temp + code;
             if(type == 0){
                 code = "sh" + code;
             }else{
@@ -417,23 +421,26 @@ public class BuyOrderUserActivity extends AppCompatActivity {
             String[] infos = StockDataUtil.parseStockInfo(stockInfo);
             showSellOrderList.clear();
             showBuyOrderList.clear();
-            for(int i = 9; i < 19; i = i + 2){
-                Order order = new Order();
-                order.setDealed(Integer.parseInt(infos[i]));
-                order.setPrice(Double.parseDouble(infos[i+1]));
-                order.setType(0);
-                Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
-                showBuyOrderList.add(order);
+            if(infos != null){
+                for(int i = 9; i < 19; i = i + 2){
+                    Order order = new Order();
+                    order.setDealed(Integer.parseInt(infos[i]));
+                    order.setPrice(Double.parseDouble(infos[i+1]));
+                    order.setType(0);
+                    Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                    showBuyOrderList.add(order);
+                }
+
+                for(int i = 19; i < 29; i = i + 2){
+                    Order order = new Order();
+                    order.setDealed(Integer.parseInt(infos[i]));
+                    order.setPrice(Double.parseDouble(infos[i+1]));
+                    order.setType(1);
+                    Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
+                    showSellOrderList.add(order);
+                }
             }
 
-            for(int i = 19; i < 29; i = i + 2){
-                Order order = new Order();
-                order.setDealed(Integer.parseInt(infos[i]));
-                order.setPrice(Double.parseDouble(infos[i+1]));
-                order.setType(1);
-                Log.d(TAG, "getSellOrder: " + order.getDealed() + " " + order.getPrice());
-                showSellOrderList.add(order);
-            }
             progressDialog.cancel();
             initViewListView();
             super.onPostExecute(s);

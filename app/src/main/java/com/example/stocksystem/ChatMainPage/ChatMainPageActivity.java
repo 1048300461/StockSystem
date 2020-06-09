@@ -451,7 +451,11 @@ public class ChatMainPageActivity extends AppCompatActivity {
         if(stock[0] != null){
             code = stock[0].getStock_id() + "";
             int length = 6 - code.length();
-            code = String.join("", Collections.nCopies(length,"0")) + code;
+            String temp = "";
+            for(int i = 0; i < length; i++){
+                temp += "0";
+            }
+            code = temp + code;
 
             if(stock[0].getType() == 0){
                 code = "sh" + code;
@@ -482,7 +486,11 @@ public class ChatMainPageActivity extends AppCompatActivity {
         if(stock[0] != null){
             code = stockId + "";
             int length = 6 - code.length();
-            code = String.join("", Collections.nCopies(length,"0")) + code;
+            String temp = "";
+            for(int i = 0; i < length; i++){
+                temp += "0";
+            }
+            code = temp + code;
             if(stock[0].getType() == 0){
                 code = "sh" + code;
             }else{
