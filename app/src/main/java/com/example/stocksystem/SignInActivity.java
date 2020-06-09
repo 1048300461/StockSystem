@@ -124,8 +124,8 @@ public class SignInActivity extends AppCompatActivity {
         user.setLogin_name(username);
         user.setName(username);
         user.setPasswd(pwd);
-        user.setCny_freezed(0); //资金默认为0
-        user.setCny_free(0);
+        user.setCny_freezed(0); //资金默认为20000
+        user.setCny_free(20000);
         user.setTemp(0);
         isSignSql = signInDao.IsSignIn(user);
     }

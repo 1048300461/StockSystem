@@ -2,6 +2,8 @@ package com.example.stocksystem.dao;
 
 import com.example.stocksystem.bean.Order;
 
+import java.util.List;
+
 /**
  * author:zc
  * created on:2020/4/21 16:19
@@ -28,7 +30,7 @@ public interface OrderDao {
      * @param stockId 股票id
      * @return 查找结果
      */
-    Order findOneOrderByUserIdAndStockId(int userId, int stockId);
+    List<Order> findOneOrderByUserIdAndStockId(int userId, int stockId);
 
     /**
      *取消订单

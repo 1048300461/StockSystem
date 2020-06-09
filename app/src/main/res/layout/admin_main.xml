@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AdminActivity">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:layout_marginLeft="5dp"
+                    android:text="退出登录"
+                    android:background="@color/colorWhite"
+                    android:onClick="finishThis"
+                    android:drawableLeft="@mipmap/buttoncancel_logo_default"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:id="@+id/title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="管理股票"
+                    android:textSize="25sp"
+                    android:layout_centerHorizontal="true"/>
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:layout_margin="5dp"
+                    android:layout_alignParentRight="true"
+                    android:onClick="refresh"
+                    android:src="@drawable/refresh_logo"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <!--    股票名称    -->
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+
+                <EditText
+                    android:id="@+id/admin_stockName"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/admin_style_border"
+                    android:hint="输入股票名称" />
+
+            </LinearLayout>
+
+        <!--    股票发行量    -->
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+
+            <EditText
+                android:inputType="number|numberDecimal"
+                android:id="@+id/admin_stockUnDealed"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/admin_style_border"
+                android:hint="请输入股票发行量" />
+
+        </LinearLayout>
+
+        <!--    股票发行量    -->
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <EditText
+                android:inputType="number|numberDecimal"
+                android:id="@+id/admin_stockPrice"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/admin_style_border"
+                android:hint="请输入股票发行价" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/admin_btn_ok"
+                android:background="#6666FF"
+                android:text="发行股票"
+                android:textSize="28sp"
+                android:textColor="@color/colorWhite"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+            </Button>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#83738F"></View>
+
+        <LinearLayout
+            android:background="#83738F"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginLeft="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:textSize="15sp"
+                    android:text="股票名称"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textSize="15sp"
+                    android:text="系统份额"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:textSize="15sp"
+                    android:layout_alignParentRight="true"
+                    android:text="用户份额"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@color/colorWhite"
+                android:layout_margin="1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/admin_listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </ListView>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>

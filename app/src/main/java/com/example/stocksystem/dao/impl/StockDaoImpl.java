@@ -17,9 +17,46 @@ import java.util.List;
  * description:
  */
 public class StockDaoImpl implements StockDao {
+
+    public static int getStockId(){
+        int count = 0;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "select MAX(stock_id) from stock;";
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while(rs.next())
+            {
+               count = rs.getInt(1)+1;
+            }
+            rs.close();
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     @Override
-    public boolean insertStock(Stock stock) {
-        return false;
+    public boolean insertStock(Stock stock){
+        boolean result = false;
+        try{
+            Connection conn = DataBaseUtil.getSQLConnection();
+            String sql = "insert into stock values("+stock.getStock_id()+",'"+stock.getName()+"',0);";
+            Statement statement = conn.createStatement();
+            int rs = statement.executeUpdate(sql);
+            if (rs!=0)
+            {
+                result = true;
+            }
+            statement.close();
+            conn.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override

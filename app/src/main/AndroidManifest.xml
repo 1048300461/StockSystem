@@ -32,6 +32,7 @@
         <activity android:name=".StockDeatailActivity"/>
         <activity android:name=".SignInActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".AdminActivity"/>
         <activity android:name=".ChatMainPage.ChatMainPageActivity"/>
         <activity android:name=".OrderShow.BuyOrderUserActivity"/>
         <activity android:name=".OrderShow.SellOrderUserActivity"/>
@@ -45,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AdminActivity" />
     </application>
 </manifest>
 

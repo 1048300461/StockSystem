@@ -30,7 +30,7 @@ public class QueryOrdersTransDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order findOneOrderByUserIdAndStockId(int userId, int stockId) {
+    public List<Order> findOneOrderByUserIdAndStockId(int userId, int stockId) {
         return null;
     }
 

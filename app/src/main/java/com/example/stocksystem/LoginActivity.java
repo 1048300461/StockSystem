@@ -192,7 +192,18 @@ public class LoginActivity extends AppCompatActivity {
                 }else
                 {
                     Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
-                    goMainActivity();
+                    if (user.getType()==1)      //访问管理员页面
+                    {
+
+                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                        IsUser = false; //防止管理返回主页面
+                    }else
+                    {
+                        goMainActivity();
+                    }
+
+
                 }
             }else
                 Toast.makeText(LoginActivity.this,"用户名不存在！",Toast.LENGTH_SHORT).show();
