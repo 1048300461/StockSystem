@@ -416,6 +416,8 @@ public class BuyOrderUserActivity extends AppCompatActivity {
 
             return null;
         }
+
+
         /**
          * onPostExecute方法用于在执行完后更新UI，显示结果
          * @param s
