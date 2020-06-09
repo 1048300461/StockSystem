@@ -93,7 +93,6 @@ public class StockDaoImpl implements StockDao {
                 Stock stock = new Stock();
                 stock.setName(rs.getString("name"));
                 stock.setStock_id(rs.getInt("stock_id"));
-                stock.setType(rs.getInt("type"));
                 lists.add(stock);
             }
             rs.close();

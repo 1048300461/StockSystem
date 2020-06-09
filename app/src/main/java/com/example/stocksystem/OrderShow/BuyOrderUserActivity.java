@@ -72,11 +72,14 @@ public class BuyOrderUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.buy_order_user);
-        initInfo();
+
+
         Bundle bundle = this.getIntent().getExtras();
         codeInfo = bundle.getString("codeInfo");
         Log.d(TAG, "onCreate: " + codeInfo);
-
+        GetStockAcsncTask getStockAcsncTask = new GetStockAcsncTask();
+        getStockAcsncTask.execute();
+        initInfo();
         //实例页面控件
         tv_username = findViewById(R.id.buy_order_user_tvUser);
         spinner = findViewById(R.id.buyOrder_spinner_type);
@@ -160,8 +163,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
                     editText_price.setText(showSellOrderList.get(position).getPrice()+"");
             }
         });
-        GetStockAcsncTask getStockAcsncTask = new GetStockAcsncTask();
-        getStockAcsncTask.execute();
+
 
         //转为股票id
         OnItemStockId = Integer.parseInt(codeInfo.substring(2));
@@ -334,6 +336,7 @@ public class BuyOrderUserActivity extends AppCompatActivity {
             getFreeMoney();//查询用户可用人民币数量
             StockDao stockDao = new StockDaoImpl();
             stockList= stockDao.queryAllStock();
+            Log.d(TAG, "stock: " + stockList.toString());
             Log.d(TAG, "doInBackground: " + FreeMoney);
             return null;
         }
