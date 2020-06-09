@@ -25,7 +25,7 @@ public class OrderDaoImpl implements OrderDao {
             String dateString = formatter.format(order.getCreate_date());
             String sql = "insert into orders values(?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1,queryOrdersCount()+40000001);
+            pstmt.setInt(1,queryOrdersMax()+1);
             pstmt.setString(2,dateString);
             pstmt.setInt(3,order.getUser_id());
             pstmt.setInt(4,order.getStock_id());
@@ -56,11 +56,11 @@ public class OrderDaoImpl implements OrderDao {
      *查询orders表中的行数，便于生成order_id
      * @return
      */
-    private static int queryOrdersCount() {
+    private static int queryOrdersMax() {
         int Count = 0;
         try{
             Connection conn = DataBaseUtil.getSQLConnection();
-            String sql = "select count(*) from orders";
+            String sql = "select MAX(order_id) from orders;";
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next())

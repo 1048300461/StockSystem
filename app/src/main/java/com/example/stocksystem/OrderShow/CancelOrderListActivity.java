@@ -134,13 +134,14 @@ public class CancelOrderListActivity extends AppCompatActivity {
     //访问数据库获取数据
     private void getOrders(){
         setStockNameMap();
-        OrdersListDao dao = new OrdersListDaoImpl();
+        OrdersListDaoImpl dao = new OrdersListDaoImpl();
         if (username.equals("admin"))       //管理员可以查询所有人的信息
         {
             orderList = dao.AllOrders();
         }else
         {
-            orderList = dao.queryOrdersByUser(user_id);
+
+            orderList = dao.queryOrdersInUnDealedByUser(user_id);
         }
     }
     //构建股票名称和编号索引
