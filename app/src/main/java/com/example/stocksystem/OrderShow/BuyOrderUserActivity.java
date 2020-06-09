@@ -416,6 +416,8 @@ public class BuyOrderUserActivity extends AppCompatActivity {
 
             return null;
         }
+
+
         /**
          * onPostExecute方法用于在执行完后更新UI，显示结果
          * @param s
@@ -472,5 +474,11 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
         user_id = sp.getInt("userid", 1000001);
         username = sp.getString("name", "null");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

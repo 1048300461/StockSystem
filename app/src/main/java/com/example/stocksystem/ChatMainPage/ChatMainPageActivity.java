@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.stocksystem.LoginActivity;
 import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
 import com.example.stocksystem.OrderShow.CancelOrderListActivity;
 import com.example.stocksystem.OrderShow.OrdersListActivity;
@@ -56,6 +58,7 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class ChatMainPageActivity extends AppCompatActivity {
 
@@ -70,7 +73,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Resources resources;
     private String[] operations = new String[]{"购买股票", "抛售股票", "查询股票信息", "查询财务信息", "查询成交订单",
-                        "查看交易中订单", "查询股票名称", "查询股票代码"};
+                        "查看交易中订单", "查询股票名称", "查询股票代码", "随机股票名称", "退出登录"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
             "\n"+"1. 购买股票 股票代码(股票名称)"+
@@ -80,7 +83,9 @@ public class ChatMainPageActivity extends AppCompatActivity {
             "\n"+"5. 查询成交订单" +
             "\n"+"6. 查看交易中订单"+
             "\n"+"7. 查询股票名称 股票代码"+
-            "\n"+"8. 查询股票代码 股票名称");
+            "\n"+"8. 查询股票代码 股票名称" +
+            "\n"+"9. 随机股票名称" +
+            "\n"+"10. 退出登录");
     private MsgAdapter msgAdapter;
     private boolean isLoadSuccess = false;
     private String searchInfo = "";
@@ -88,6 +93,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
 
     private static final String TAG = "ChatMainPageActivity";
     private MsgEntity rcv_msg = null;
+    private List<Stock> stockList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,8 @@ public class ChatMainPageActivity extends AppCompatActivity {
         initView();//初始化控件
         initMsg();//初始化界面
         initListener();
+
+        stockList = new ArrayList<>();
     }
 
 
@@ -186,6 +194,12 @@ public class ChatMainPageActivity extends AppCompatActivity {
                                 getSQLAcsncTask.execute();
                             }
 
+                        }else if(code == 9){
+                            //退出登录
+                            logout();
+                        }else if(code == 8){
+                            //查看热门股票
+                            findHotStock();
                         }else{
                             showDialog(showContent, code, "");
                         }
@@ -198,6 +212,116 @@ public class ChatMainPageActivity extends AppCompatActivity {
                 edt_msg.setText("");
             }
         });
+    }
+
+    /**
+     * 查询最热门的5个股票
+     */
+    private void findHotStock() {
+        GetStockAcsncTask getStockAcsncTask = new GetStockAcsncTask();
+        getStockAcsncTask.execute();
+
+    }
+
+
+    //访问数据库--》得到股票编号和名称,查询用户可用人民币数量
+    private class GetStockAcsncTask extends AsyncTask<String,Integer,String> {
+
+        /**
+         * onPreExecute方法用于执行后台任务前的UI操作
+         */
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(ChatMainPageActivity.this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);      //设置进度条风格，风格为圆形，旋转的
+            progressDialog.setTitle("提示");
+            progressDialog.setMessage("小股查询数据中。。。");
+            progressDialog.setIndeterminate(true);  //设置ProgressDialog 的进度条是否不明确
+            progressDialog.setCancelable(false); //设置ProgressDialog 是否可以按退回按键取消
+            progressDialog.show();
+        }
+
+        /**
+         * doInBackground方法内部执行后台任务，不可在此方法中更新主UI
+         * @param strings
+         * @return
+         */
+        @Override
+        protected String doInBackground(String... strings) {
+            StockDao stockDao = new StockDaoImpl();
+            stockList= stockDao.queryAllStock();
+            Log.d(TAG, "stock: " + stockList.toString());
+            return null;
+        }
+        /**
+         * onPostExecute方法用于在执行完后更新UI，显示结果
+         * @param s
+         */
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.cancel();
+
+            String content = "随机显示5条股票：\n";
+
+
+
+            for(int i = 0; i < 5; i++){
+                int index = new Random().nextInt(1000*(i+1)-(1 + 1000*i))+(1 + 1000*i);
+                if(index > 10){
+                    index -= 5;
+                }
+                Log.d(TAG, "onPostExecute: " + index);
+                Stock stock = stockList.get(index);
+                String code = stock.getStock_id() + "";
+                int length = 6 - code.length();
+                String temp = "";
+                for(int j = 0; j < length; j++){
+                    temp += "0";
+                }
+                content += "股票名称: " + stock.getName() + "  股票代码: " + temp + code + "\n";
+            }
+
+            rcv_msg=new MsgEntity(MsgEntity.RCV_MSG,content);
+            reciveMsg(rcv_msg, msgAdapter);
+
+        }
+
+    }
+
+    /**
+     * 退出登录
+     * @author zc
+     */
+    private void logout() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ChatMainPageActivity.this);
+
+        builder.setIcon(R.drawable.ic_question_answer_black_24dp);
+        builder.setMessage("确定退出登录吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //修改sp内容
+                SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("isLogin", false);
+                editor.putInt("userid",-1);
+                editor.putString("name","");
+                editor.apply();
+                //跳转至登录界面
+                Intent intent = new Intent(ChatMainPageActivity.this, LoginActivity.class);
+                startActivity(intent);
+                //结束该活动
+                finish();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     //访问数据库---》得到信息
@@ -499,5 +623,11 @@ public class ChatMainPageActivity extends AppCompatActivity {
         }
 
         return code;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
