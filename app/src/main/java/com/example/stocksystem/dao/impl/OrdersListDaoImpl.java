@@ -51,7 +51,7 @@ public class OrdersListDaoImpl implements OrdersListDao {
         List<Order> lists = new ArrayList<>();
         try{
             Connection conn = DataBaseUtil.getSQLConnection();
-            String sql = "select * from orders where user_id="+userId+"and undealed!=0";
+            String sql = "select * from orders where user_id="+userId+"and undealed=0";
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next())

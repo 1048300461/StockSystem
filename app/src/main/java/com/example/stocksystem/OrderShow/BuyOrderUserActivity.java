@@ -74,12 +74,13 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         setContentView(R.layout.buy_order_user);
 
 
+
+        initInfo();
         Bundle bundle = this.getIntent().getExtras();
         codeInfo = bundle.getString("codeInfo");
         Log.d(TAG, "onCreate: " + codeInfo);
         GetStockAcsncTask getStockAcsncTask = new GetStockAcsncTask();
         getStockAcsncTask.execute();
-        initInfo();
         //实例页面控件
         tv_username = findViewById(R.id.buy_order_user_tvUser);
         spinner = findViewById(R.id.buyOrder_spinner_type);
