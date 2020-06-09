@@ -473,4 +473,10 @@ public class BuyOrderUserActivity extends AppCompatActivity {
         user_id = sp.getInt("userid", 1000001);
         username = sp.getString("name", "null");
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

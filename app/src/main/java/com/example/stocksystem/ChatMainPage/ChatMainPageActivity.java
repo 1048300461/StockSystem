@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.stocksystem.LoginActivity;
 import com.example.stocksystem.OrderShow.BuyOrderUserActivity;
 import com.example.stocksystem.OrderShow.CancelOrderListActivity;
 import com.example.stocksystem.OrderShow.OrdersListActivity;
@@ -70,7 +72,7 @@ public class ChatMainPageActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Resources resources;
     private String[] operations = new String[]{"购买股票", "抛售股票", "查询股票信息", "查询财务信息", "查询成交订单",
-                        "查看交易中订单", "查询股票名称", "查询股票代码"};
+                        "查看交易中订单", "查询股票名称", "查询股票代码", "退出登录"};
     private MsgEntity msg1=new MsgEntity(MsgEntity.RCV_MSG,"欢迎您本软件，小股为您服务！"+
             "\n"+"您可以通过发送指令或语音输入\n跳转到相关界面进行操作"+
             "\n"+"1. 购买股票 股票代码(股票名称)"+
@@ -80,7 +82,8 @@ public class ChatMainPageActivity extends AppCompatActivity {
             "\n"+"5. 查询成交订单" +
             "\n"+"6. 查看交易中订单"+
             "\n"+"7. 查询股票名称 股票代码"+
-            "\n"+"8. 查询股票代码 股票名称");
+            "\n"+"8. 查询股票代码 股票名称" +
+            "\n"+"9. 退出登录");
     private MsgAdapter msgAdapter;
     private boolean isLoadSuccess = false;
     private String searchInfo = "";
@@ -186,6 +189,9 @@ public class ChatMainPageActivity extends AppCompatActivity {
                                 getSQLAcsncTask.execute();
                             }
 
+                        }else if(code == 8){
+                            //退出登录
+                            logout();
                         }else{
                             showDialog(showContent, code, "");
                         }
@@ -198,6 +204,37 @@ public class ChatMainPageActivity extends AppCompatActivity {
                 edt_msg.setText("");
             }
         });
+    }
+
+    private void logout() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ChatMainPageActivity.this);
+
+        builder.setIcon(R.drawable.ic_question_answer_black_24dp);
+        builder.setMessage("确定退出登录吗？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //修改sp内容
+                SharedPreferences sp = getSharedPreferences("info", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("isLogin", false);
+                editor.putInt("userid",-1);
+                editor.putString("name","");
+                editor.apply();
+                //跳转至登录界面
+                Intent intent = new Intent(ChatMainPageActivity.this, LoginActivity.class);
+                startActivity(intent);
+                //结束该活动
+                finish();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     //访问数据库---》得到信息
@@ -499,5 +536,11 @@ public class ChatMainPageActivity extends AppCompatActivity {
         }
 
         return code;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

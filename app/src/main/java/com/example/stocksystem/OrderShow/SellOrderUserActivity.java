@@ -430,34 +430,6 @@ public class SellOrderUserActivity extends AppCompatActivity {
                 }
             }
 
-
-//            OrdersListDao listDao = new OrdersListDaoImpl();
-//            List<Order> sqlBuyOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,0);//买入
-//            List<Order> sqlSellOrders = listDao.queryOrdersByStockIdAndType(OnItemStockId,1);//卖出
-//            //买入
-//            //查询出的结果后五项为最新的
-//            if (sqlBuyOrders.size()<5)
-//            {
-//
-//                showBuyOrderList = sqlBuyOrders;
-//            }else
-//            {
-//                for (int i=1;i<6;i++)
-//                {
-//                    showBuyOrderList.add(sqlBuyOrders.get(sqlBuyOrders.size()-i));
-//                }
-//            }
-//            //卖出
-//            if (sqlSellOrders.size()<5)
-//            {
-//                showSellOrderList = sqlSellOrders;
-//            }else
-//            {
-//                for (int i=1;i<6;i++)
-//                {
-//                    showSellOrderList.add(sqlSellOrders.get(sqlSellOrders.size()-i));
-//                }
-//            }
             return null;
         }
         /**
@@ -493,5 +465,11 @@ public class SellOrderUserActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("info",MODE_PRIVATE);
         user_id = sp.getInt("userid", -1);
         username = sp.getString("name", "null");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }
