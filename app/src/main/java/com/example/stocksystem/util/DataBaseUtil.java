@@ -29,7 +29,7 @@ public class DataBaseUtil {
    private static String USER="sa";
     private static String PASSWORD="123456";
    private static String DB="dbo";
-   private static String PORT = "58026";
+   private static String PORT = "53898";
 
     //private static String IP="192.168.73.128";
     //private static String USER="sa";
