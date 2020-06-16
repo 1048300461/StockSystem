@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
     //麦克风
     private static final int GET_RECODE_AUDIO = 1;
     private static String[] PERMISSION_AUDIO = {
-            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE
             //在此处输入扩展需要申请的权限
     };
 
